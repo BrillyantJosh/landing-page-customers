@@ -12,7 +12,6 @@ const APP_LOGIN_URL = "https://app.mejmosefajn.org";
 export default function Landing() {
   const navigate = useNavigate();
   const [scanning, setScanning] = useState(false);
-  const [manualWif, setManualWif] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,11 +28,6 @@ export default function Landing() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleManualSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (manualWif.trim()) processWif(manualWif.trim());
   };
 
   return (
@@ -157,39 +151,22 @@ export default function Landing() {
                   <span>{scanning ? "Skeniram…" : "Pripravljeno za skeniranje"}</span>
                 </div>
 
-                {/* Manual paste */}
-                <form onSubmit={handleManualSubmit} className="mt-5 space-y-2">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={manualWif}
-                      onChange={(e) => setManualWif(e.target.value)}
-                      placeholder="Prilepi WIF ključ…"
-                      disabled={loading}
-                      className="w-full rounded-2xl border border-border/70 bg-white/70 px-4 py-3 pr-28 text-sm focus:outline-none focus:ring-2 focus:ring-lana-purple/40"
-                    />
-                    <button
-                      type="submit"
-                      disabled={loading || !manualWif.trim()}
-                      className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-xl bg-lana-purple text-white text-xs font-semibold px-3 py-2 hover:bg-lana-purple/90 transition disabled:opacity-50"
-                    >
-                      ali prilepi ročno
-                    </button>
+                {error && (
+                  <div className="mt-4 flex items-start gap-2 rounded-2xl bg-destructive/10 border border-destructive/20 p-3">
+                    <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
+                    <p className="text-xs text-destructive">{error}</p>
                   </div>
+                )}
 
-                  {error && (
-                    <div className="flex items-start gap-2 rounded-2xl bg-destructive/10 border border-destructive/20 p-3">
-                      <AlertCircle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
-                      <p className="text-xs text-destructive">{error}</p>
-                    </div>
-                  )}
-
-                  <p className="text-center text-xs text-muted-foreground pt-1">
-                    <Link to="/kako-do-denarnice" className="underline underline-offset-2 hover:text-foreground transition">
-                      Nimate denarnice?
-                    </Link>
-                  </p>
-                </form>
+                <div className="mt-5 text-center">
+                  <Link
+                    to="/kako-do-denarnice"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-lana-purple hover:text-lana-purple/75 underline underline-offset-4 transition"
+                  >
+                    <Wallet className="w-4 h-4" />
+                    Nimate denarnice?
+                  </Link>
+                </div>
               </div>
 
               {/* About note */}
