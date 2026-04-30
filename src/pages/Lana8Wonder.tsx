@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, LogIn, Star } from "lucide-react";
+import { ArrowLeft, LogIn, Star, ExternalLink } from "lucide-react";
 import { LanaLogo } from "@/components/LanaLogo";
 import { RotatingBackground } from "@/components/RotatingBackground";
 
@@ -63,10 +63,19 @@ export default function Lana8Wonder() {
               </div>
             </article>
 
-            <div className="flex justify-center pb-4">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center pb-4">
+              <a
+                href="https://www.lana8wonder.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-lana-purple text-white px-8 py-4 text-base font-semibold shadow-lg hover:bg-lana-purple/90 transition"
+              >
+                <ExternalLink className="w-5 h-5" />
+                Obišči lana8wonder.com
+              </a>
               <button
                 onClick={() => window.history.back()}
-                className="inline-flex items-center gap-2 rounded-2xl bg-lana-purple text-white px-8 py-4 text-base font-semibold shadow-lg hover:bg-lana-purple/90 transition"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/80 hover:bg-white border border-border/70 px-8 py-4 text-base font-semibold transition"
               >
                 <ArrowLeft className="w-5 h-5" />
                 Nazaj

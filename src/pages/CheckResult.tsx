@@ -59,26 +59,26 @@ export default function CheckResult() {
 
   const [accountFrozen, setAccountFrozen] = useState<boolean | null>(null);
 
-  // Fetch KIND 0 profile to get name + preferred currency
+  // Sequential init: profile first (to get currency), then registration + balance
   useEffect(() => {
-    if (!hexId) return;
-    fetch(`/api/profile/${hexId}`)
-      .then((r) => r.ok ? r.json() : null)
-      .then((data: Kind0Profile | null) => {
-        if (!data) return;
-        setProfile(data);
-        // Use profile currency as default if no localStorage override
-        if (!window.localStorage.getItem("lana-landing-currency") && data.currency) {
-          setCurrency(data.currency);
+    if (!state || !hexId) return;
+
+    const init = async () => {
+      // 1. Fetch KIND 0 profile — determines preferred currency
+      let activeCurrency = window.localStorage.getItem("lana-landing-currency") || "EUR";
+      try {
+        const profileRes = await fetch(`/api/profile/${hexId}`);
+        if (profileRes.ok) {
+          const profileData: Kind0Profile = await profileRes.json();
+          setProfile(profileData);
+          if (!window.localStorage.getItem("lana-landing-currency") && profileData.currency) {
+            activeCurrency = profileData.currency;
+            setCurrency(profileData.currency);
+          }
         }
-      })
-      .catch(() => {});
-  }, [hexId]);
+      } catch {}
 
-  useEffect(() => {
-    if (!state) return;
-
-    const checkRegistration = async () => {
+      // 2. Check wallet registration
       try {
         const res = await fetch("/api/check-wallet", {
           method: "POST",
@@ -88,7 +88,7 @@ export default function CheckResult() {
         const data = (await res.json()) as RegistrationResult;
         setRegistration(data);
         if (data.registered) {
-          fetchBalance(currency);
+          fetchBalance(activeCurrency); // correct currency guaranteed
           fetchAccountStatus();
         }
       } catch (err) {
@@ -98,9 +98,9 @@ export default function CheckResult() {
       }
     };
 
-    checkRegistration();
+    init();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state?.walletId]);
+  }, [state?.walletId, hexId]);
 
   const fetchBalance = async (cur: string) => {
     if (!state) return;
@@ -298,7 +298,7 @@ export default function CheckResult() {
                     icon={<ShoppingBag className="w-5 h-5 text-lana-purple" />}
                     label="Kje potrošim?"
                     desc="Partnerji v omrežju"
-                    onClick={() => navigate("/kako-do-denarnice")}
+                    onClick={() => navigate("/kje-potrosim")}
                   />
                   <ActionButton
                     icon={<Star className="w-5 h-5 text-lana-purple" />}
