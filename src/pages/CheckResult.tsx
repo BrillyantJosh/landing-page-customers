@@ -43,12 +43,7 @@ export default function CheckResult() {
 
   const [profile, setProfile] = useState<Kind0Profile | null>(null);
 
-  const [currency, setCurrency] = useState<string>(() => {
-    if (typeof window !== "undefined") {
-      return window.localStorage.getItem("lana-landing-currency") || "EUR";
-    }
-    return "EUR";
-  });
+  const [currency, setCurrency] = useState<string>("EUR");
 
   const [registration, setRegistration] = useState<RegistrationResult | null>(null);
   const [regLoading, setRegLoading] = useState(true);
@@ -64,14 +59,14 @@ export default function CheckResult() {
     if (!state || !hexId) return;
 
     const init = async () => {
-      // 1. Fetch KIND 0 profile — determines preferred currency
-      let activeCurrency = window.localStorage.getItem("lana-landing-currency") || "EUR";
+      // 1. Fetch KIND 0 profile — KIND 0 currency always wins on initial load
+      let activeCurrency = "EUR";
       try {
         const profileRes = await fetch(`/api/profile/${hexId}`);
         if (profileRes.ok) {
           const profileData: Kind0Profile = await profileRes.json();
           setProfile(profileData);
-          if (!window.localStorage.getItem("lana-landing-currency") && profileData.currency) {
+          if (profileData.currency) {
             activeCurrency = profileData.currency;
             setCurrency(profileData.currency);
           }
@@ -133,7 +128,6 @@ export default function CheckResult() {
 
   const handleCurrencyChange = (cur: string) => {
     setCurrency(cur);
-    if (typeof window !== "undefined") window.localStorage.setItem("lana-landing-currency", cur);
     if (registration?.registered) fetchBalance(cur);
   };
 
