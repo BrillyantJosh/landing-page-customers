@@ -73,7 +73,7 @@ export default function KakoDodenarnice() {
                   edini imetnik ključa. To je svoboda in odgovornost hkrati. Kartico hranite varno, ključa pa ne delite.
                 </p>
 
-                <p className="pt-2 font-semibold text-lana-ink">Poiščite partnerja v enem od naših portalov:</p>
+                <p className="pt-2 font-semibold text-lana-ink">Poiščite ponudnika na enem od naših portalov:</p>
               </div>
             </article>
 
