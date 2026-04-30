@@ -65,7 +65,7 @@ export default function Landing() {
               </h1>
 
               <p className="hero-glow-soft text-lg sm:text-xl text-lana-ink/95 max-w-md font-semibold">
-                Lana preoblikuje finančno realnost v nekaj več, kar meji na čarovnijo.
+                Lana preoblikuje finančno realnost v nekaj več — v izkušnjo, ki meji na čarovnijo.
               </p>
 
               <div className="flex flex-wrap gap-3">
