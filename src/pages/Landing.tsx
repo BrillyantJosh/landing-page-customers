@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock, ScanLine, ShieldCheck, Zap, Eye, Loader2, AlertCircle } from "lucide-react";
+import { Lock, ShieldCheck, Zap, Eye, Loader2, AlertCircle, LogIn } from "lucide-react";
 import { LanaLogo } from "@/components/LanaLogo";
-import { LanguageSelector } from "@/components/LanguageSelector";
 import { RotatingBackground } from "@/components/RotatingBackground";
 import { InlineWifScanner } from "@/components/InlineWifScanner";
-import { useLanguage } from "@/i18n/LanguageContext";
+import { LanaCardMock } from "@/components/LanaCardMock";
 import { convertWifToIds } from "@/lib/crypto";
+
+const APP_LOGIN_URL = "https://app.mejmosefajn.org";
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { t } = useLanguage();
   const [scanning, setScanning] = useState(false);
   const [manualWif, setManualWif] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ export default function Landing() {
       navigate(`/check/${ids.nostrHexId}`, { state: ids });
     } catch (err) {
       console.error(err);
-      setError(t.error_invalid);
+      setError("Neveljaven WIF ključ. Poskusi znova.");
     } finally {
       setLoading(false);
     }
@@ -44,7 +44,13 @@ export default function Landing() {
         {/* Top bar */}
         <header className="px-6 sm:px-10 lg:px-16 pt-6 sm:pt-8 flex items-center justify-between">
           <LanaLogo />
-          <LanguageSelector />
+          <a
+            href={APP_LOGIN_URL}
+            className="inline-flex items-center gap-2 rounded-full bg-white/75 backdrop-blur-md border border-white/60 px-4 py-2 text-sm font-medium text-foreground shadow-sm hover:bg-white transition"
+          >
+            <LogIn className="w-4 h-4 text-lana-purple" />
+            Prijava
+          </a>
         </header>
 
         {/* Main */}
@@ -52,20 +58,22 @@ export default function Landing() {
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-7xl w-full mx-auto">
             {/* LEFT: hero copy */}
             <section className="space-y-8 animate-fade-in">
-              <h1 className="font-display font-semibold leading-[1.05] text-5xl sm:text-6xl lg:text-7xl text-lana-ink whitespace-pre-line">
-                {t.hero_title_pre}
-                <span className="text-gradient-purple">{t.hero_title_highlight}</span>
-                {t.hero_title_post}
+              <h1 className="font-display font-semibold leading-[1.05] text-5xl sm:text-6xl lg:text-7xl text-lana-ink">
+                Preveri <span className="text-gradient-purple">stanje</span>
+                <br />
+                na svojem računu
               </h1>
 
-              <p className="text-lg sm:text-xl text-foreground/85 max-w-md whitespace-pre-line font-medium">
-                {t.hero_subtitle}
+              <p className="text-lg sm:text-xl text-foreground/85 max-w-md font-medium">
+                Skeniraj svoj Lana WIF ključ
+                <br />
+                in v trenutku preveri stanje.
               </p>
 
               <div className="flex flex-wrap gap-3">
-                <FeaturePill icon={<ShieldCheck className="w-4 h-4 text-lana-purple" />} title={t.feature_safe_title} desc={t.feature_safe_desc} />
-                <FeaturePill icon={<Zap className="w-4 h-4 text-lana-purple" />} title={t.feature_fast_title} desc={t.feature_fast_desc} />
-                <FeaturePill icon={<Eye className="w-4 h-4 text-lana-purple" />} title={t.feature_simple_title} desc={t.feature_simple_desc} />
+                <FeaturePill icon={<ShieldCheck className="w-4 h-4 text-lana-purple" />} title="Varno" desc="100% varno skeniranje" />
+                <FeaturePill icon={<Zap className="w-4 h-4 text-lana-purple" />} title="Hitro" desc="Takojšnji rezultati" />
+                <FeaturePill icon={<Eye className="w-4 h-4 text-lana-purple" />} title="Preprosto" desc="Skeniraj in preveri" />
               </div>
             </section>
 
@@ -80,14 +88,14 @@ export default function Landing() {
                 </div>
 
                 <h2 className="text-center font-display text-2xl sm:text-3xl font-semibold text-lana-ink">
-                  {t.scan_card_title}
+                  Skeniraj Lana WIF ključ
                 </h2>
                 <p className="text-center text-sm text-muted-foreground mt-2 mb-6">
-                  {t.scan_card_subtitle}
+                  Pripravi svoj ključ in ga približaj območju skeniranja.
                 </p>
 
                 {/* Scan frame — camera renders inline when scanning */}
-                <div className="scan-frame w-full aspect-[5/3] relative overflow-hidden">
+                <div className="scan-frame w-full aspect-[5/3] relative overflow-hidden p-0">
                   {scanning ? (
                     <InlineWifScanner
                       active={scanning}
@@ -95,22 +103,19 @@ export default function Landing() {
                       onStop={() => setScanning(false)}
                     />
                   ) : loading ? (
-                    <div className="flex flex-col items-center gap-2 text-lana-purple">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-lana-purple">
                       <Loader2 className="w-10 h-10 animate-spin" />
-                      <span className="text-sm font-medium">{t.loading}</span>
+                      <span className="text-sm font-medium">Preverjam stanje…</span>
                     </div>
                   ) : (
                     <button
                       type="button"
                       onClick={() => setScanning(true)}
-                      className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center hover:bg-lana-lavender/30 transition group rounded-3xl"
+                      className="absolute inset-0 group rounded-3xl"
+                      aria-label="Začni skeniranje"
                     >
-                      <div className="w-32 sm:w-40 h-20 sm:h-24 rounded-2xl bg-gradient-to-br from-lana-purpleSoft via-lana-purple to-lana-ink shadow-lg flex items-center justify-center text-white relative overflow-hidden">
-                        <img src="/lana-favicon.png" alt="" className="w-7 h-7 absolute left-3 top-3 invert opacity-90" />
-                        <span className="font-display text-2xl sm:text-3xl tracking-wide">Lana</span>
-                        <span className="absolute right-2 top-2 text-[8px] opacity-70">((•))</span>
-                      </div>
-                      <ScanLine className="w-5 h-5 text-lana-purple group-hover:scale-110 transition" />
+                      <LanaCardMock />
+                      <span className="absolute inset-0 rounded-3xl ring-0 group-hover:ring-4 group-hover:ring-lana-purple/30 transition" />
                     </button>
                   )}
                 </div>
@@ -118,7 +123,7 @@ export default function Landing() {
                 {/* Status */}
                 <div className="mt-5 flex items-center justify-center gap-2 text-xs text-muted-foreground">
                   <span className={`w-2 h-2 rounded-full ${scanning ? "bg-emerald-500" : "bg-lana-purple"} animate-pulse-soft`} />
-                  <span>{scanning ? t.scan_active : t.scan_ready}</span>
+                  <span>{scanning ? "Skeniram…" : "Pripravljeno za skeniranje"}</span>
                 </div>
 
                 {/* Manual paste */}
@@ -128,7 +133,7 @@ export default function Landing() {
                       type="text"
                       value={manualWif}
                       onChange={(e) => setManualWif(e.target.value)}
-                      placeholder={t.paste_placeholder}
+                      placeholder="Prilepi WIF ključ…"
                       disabled={loading}
                       className="w-full rounded-2xl border border-border/70 bg-white/70 px-4 py-3 pr-28 text-sm focus:outline-none focus:ring-2 focus:ring-lana-purple/40"
                     />
@@ -137,7 +142,7 @@ export default function Landing() {
                       disabled={loading || !manualWif.trim()}
                       className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-xl bg-lana-purple text-white text-xs font-semibold px-3 py-2 hover:bg-lana-purple/90 transition disabled:opacity-50"
                     >
-                      {t.scan_or_paste}
+                      ali prilepi ročno
                     </button>
                   </div>
 
@@ -155,8 +160,10 @@ export default function Landing() {
                 <div className="w-10 h-10 rounded-2xl bg-lana-lavender flex items-center justify-center shrink-0">
                   <Lock className="w-5 h-5 text-lana-purple" />
                 </div>
-                <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed whitespace-pre-line">
-                  {t.privacy_note}
+                <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed">
+                  Tvoje podatke obdelujemo varno in zasebno.
+                  <br />
+                  Nič ni shranjeno. Samo ti vidiš svoje stanje.
                 </p>
               </div>
             </section>
@@ -164,7 +171,7 @@ export default function Landing() {
 
           {/* Footer */}
           <footer className="mt-14 lg:mt-20 flex flex-col items-center gap-3 text-center">
-            <p className="text-sm text-foreground/70 italic font-medium">{t.footer_tagline}</p>
+            <p className="text-sm text-foreground/70 italic font-medium">Lana. Preprosto. Varno. Tvoje.</p>
             <div className="flex items-center gap-2 opacity-50">
               <div className="h-px w-16 bg-foreground/30" />
               <img src="/lana-favicon.png" alt="" className="w-4 h-4" />
