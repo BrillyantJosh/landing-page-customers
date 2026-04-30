@@ -90,7 +90,7 @@ export default function Landing() {
                   </div>
                   <div className="leading-tight text-left">
                     <p className="text-sm font-semibold text-lana-ink">Kako do denarnice?</p>
-                    <p className="text-[11px] text-muted-foreground">Poišči partnerja</p>
+                    <p className="text-[11px] text-muted-foreground">Poišči ponudnika</p>
                   </div>
                 </Link>
                 <Link
@@ -102,7 +102,7 @@ export default function Landing() {
                   </div>
                   <div className="leading-tight text-left">
                     <p className="text-sm font-semibold text-lana-ink">Nova realnost</p>
-                    <p className="text-[11px] text-muted-foreground">Za tiste, ki hočejo več</p>
+                    <p className="text-[11px] text-muted-foreground">Za tiste, ki želite več</p>
                   </div>
                 </Link>
               </div>
