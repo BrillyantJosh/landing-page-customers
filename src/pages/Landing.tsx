@@ -51,18 +51,18 @@ export default function Landing() {
         <main className="flex-1 px-6 sm:px-10 lg:px-16 py-8 lg:py-14 flex flex-col">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-7xl w-full mx-auto">
             {/* LEFT: hero copy */}
-            <section className="space-y-8 animate-fade-in">
+            <section className="space-y-8 animate-fade-in text-center lg:text-left">
               <h1 className="hero-glow font-display font-semibold leading-[1.05] text-5xl sm:text-6xl lg:text-7xl text-lana-ink">
                 Preveri stanje
                 <br />
                 na svojem računu
               </h1>
 
-              <p className="hero-glow-soft text-lg sm:text-xl text-lana-ink/95 max-w-md font-semibold">
+              <p className="hero-glow-soft text-lg sm:text-xl text-lana-ink/95 max-w-md font-semibold mx-auto lg:mx-0">
                 Lana preoblikuje finančno realnost v nekaj več — v izkušnjo, ki meji na čarovnijo.
               </p>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                 <Link
                   to="/pravica-do-obilja"
                   className="glass-pill px-4 py-2.5 hover:bg-white/85 hover:scale-[1.02] transition-transform"
