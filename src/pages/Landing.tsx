@@ -59,7 +59,7 @@ export default function Landing() {
             {/* LEFT: hero copy */}
             <section className="space-y-8 animate-fade-in">
               <h1 className="hero-glow font-display font-semibold leading-[1.05] text-5xl sm:text-6xl lg:text-7xl text-lana-ink">
-                Preveri <span className="text-gradient-purple">stanje</span>
+                Preveri stanje
                 <br />
                 na svojem računu
               </h1>
