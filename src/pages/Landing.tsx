@@ -183,6 +183,12 @@ export default function Landing() {
                       <p className="text-xs text-destructive">{error}</p>
                     </div>
                   )}
+
+                  <p className="text-center text-xs text-muted-foreground pt-1">
+                    <Link to="/kako-do-denarnice" className="underline underline-offset-2 hover:text-foreground transition">
+                      Nimate denarnice?
+                    </Link>
+                  </p>
                 </form>
               </div>
 

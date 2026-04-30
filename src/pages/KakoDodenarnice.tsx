@@ -11,8 +11,8 @@ const PORTALS = [
   { name: "Lana Restavracije", desc: "Hrana & pijača", url: "https://lana.restaurant" },
   { name: "Lana Lepota & Nega", desc: "Kozmetika & wellness", url: "https://lanabeauty.care" },
   { name: "Lana Moda", desc: "Oblačila & modni dodatki", url: "https://lana.fashion" },
-  { name: "Lana Gradnja", desc: "Materiali & storitve", url: "https://lana.construction" },
   { name: "Lana Pohištvo", desc: "Dom & oprema", url: "https://lana.furniture" },
+  { name: "Lana Gradnja", desc: "Materiali & storitve", url: "https://lana.construction" },
   { name: "Lana Otroci", desc: "Igrače & otroški svet", url: "https://lana.kids" },
   { name: "Lana Hišni ljubljenčki", desc: "Hrana & oprema za živali", url: "https://lana.pet" },
   { name: "Lana Počitnice", desc: "Potovanja & nastanitve", url: "https://lana.vacations" },
@@ -60,7 +60,7 @@ export default function KakoDodenarnice() {
 
               <div className="space-y-4 text-foreground/85 leading-relaxed">
                 <p>
-                  Najlažji način, da pridete do registrirane Lana denarnice na kartici, je, da pri nekom, ki je del{" "}
+                  Najlažji način, da pridete do registrirane Lana denarnice na kartici, je, da pri ponudniku, ki je del{" "}
                   <strong className="text-lana-ink">Ekonomije Obilja</strong>, kupite nek izdelek ali storitev.
                 </p>
                 <p>
