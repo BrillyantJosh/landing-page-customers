@@ -59,7 +59,11 @@ export default function Landing() {
             {/* LEFT: hero copy */}
             <section className="space-y-8 animate-fade-in">
               <h1 className="hero-glow font-display font-semibold leading-[1.05] text-5xl sm:text-6xl lg:text-7xl text-lana-ink">
-                Preveri <span className="text-gradient-purple">stanje</span>
+                Preveri{" "}
+                <span className="relative inline-block">
+                  <span className="absolute -inset-x-3 -inset-y-1.5 rounded-2xl bg-black/75 -z-10" />
+                  <span className="text-gradient-purple">stanje</span>
+                </span>
                 <br />
                 na svojem računu
               </h1>
@@ -200,7 +204,7 @@ export default function Landing() {
 
           {/* Footer */}
           <footer className="mt-14 lg:mt-20 flex flex-col items-center gap-3 text-center">
-            <p className="text-sm text-foreground/70 italic font-medium">Lana. Preprosto. Varno. Tvoje.</p>
+            <p className="text-sm text-foreground/70 italic font-medium">Lana. Preprosto. Več. Tvoje.</p>
             <div className="flex items-center gap-2 opacity-50">
               <div className="h-px w-16 bg-foreground/30" />
               <img src="/lana-favicon.png" alt="" className="w-4 h-4" />
