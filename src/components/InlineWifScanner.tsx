@@ -1,26 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import jsQR from "jsqr";
-import { X, Loader2, ScanLine } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "./ui/dialog";
+import { Loader2, X, AlertCircle } from "lucide-react";
 
-interface QRScannerProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface Props {
+  active: boolean;
   onScan: (data: string) => void;
-  title?: string;
-  description?: string;
+  onStop: () => void;
 }
 
 const PW = 640;
 const PH = 360;
 
-export function QRScanner({ isOpen, onClose, onScan, title = "Skeniraj QR", description = "Pomakni QR v okvir" }: QRScannerProps) {
+export function InlineWifScanner({ active, onScan, onStop }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number | null>(null);
@@ -29,20 +20,50 @@ export function QRScanner({ isOpen, onClose, onScan, title = "Skeniraj QR", desc
   const grayRef = useRef(new Uint8Array(PW * PH));
   const integralRef = useRef(new Int32Array((PW + 1) * (PH + 1)));
 
-  const [isScanning, setIsScanning] = useState(false);
+  const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!active) {
+      cleanup();
+      setReady(false);
+      setError(null);
+      return;
+    }
+
     doneRef.current = false;
     setError(null);
-    const timer = setTimeout(() => startCamera(), 150);
+    setReady(false);
+
+    const start = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: "environment",
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+          },
+        });
+        streamRef.current = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          await videoRef.current.play();
+          setReady(true);
+          animRef.current = requestAnimationFrame(scanFrame);
+        }
+      } catch (err) {
+        console.error("Camera error:", err);
+        setError("Dostop do kamere ni mogoč. Preveri dovoljenja v brskalniku.");
+      }
+    };
+
+    const timer = setTimeout(start, 80);
     return () => {
       clearTimeout(timer);
       cleanup();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  }, [active]);
 
   const adaptiveThreshold = (imageData: ImageData): void => {
     const { data, width, height } = imageData;
@@ -112,36 +133,10 @@ export function QRScanner({ isOpen, onClose, onScan, title = "Skeniraj QR", desc
       doneRef.current = true;
       cleanup();
       onScan(code.data);
-      onClose();
       return;
     }
 
     animRef.current = requestAnimationFrame(scanFrame);
-  };
-
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: "environment",
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
-      });
-
-      streamRef.current = stream;
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-        setIsScanning(true);
-        setError(null);
-        animRef.current = requestAnimationFrame(scanFrame);
-      }
-    } catch (err) {
-      console.error("Camera error:", err);
-      setError("Dostop do kamere ni mogoč. Preveri dovoljenja.");
-    }
   };
 
   const cleanup = () => {
@@ -153,57 +148,58 @@ export function QRScanner({ isOpen, onClose, onScan, title = "Skeniraj QR", desc
       streamRef.current.getTracks().forEach((t) => t.stop());
       streamRef.current = null;
     }
-    setIsScanning(false);
-  };
-
-  const handleClose = () => {
-    cleanup();
-    onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <ScanLine className="w-5 h-5 text-lana-purple" />
-            {title}
-          </DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
+    <div className="absolute inset-0 rounded-3xl overflow-hidden bg-black">
+      <video
+        ref={videoRef}
+        className="w-full h-full object-cover"
+        playsInline
+        muted
+      />
+      <canvas ref={canvasRef} className="hidden" />
 
-        <div className="space-y-4">
-          <div className="relative aspect-square rounded-2xl bg-black/90 overflow-hidden">
-            <video ref={videoRef} className="w-full h-full object-cover" playsInline muted />
-            <canvas ref={canvasRef} className="hidden" />
+      {!ready && !error && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-lana-ink/70 text-white gap-2">
+          <Loader2 className="w-8 h-8 animate-spin" />
+          <span className="text-xs">Inicializiram kamero…</span>
+        </div>
+      )}
 
-            {!isScanning && !error && (
-              <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
-                <Loader2 className="w-8 h-8 animate-spin text-lana-purple" />
-              </div>
-            )}
-
-            {isScanning && (
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-2 left-2 w-10 h-10 border-l-4 border-t-4 border-lana-purple rounded-tl-2xl" />
-                <div className="absolute top-2 right-2 w-10 h-10 border-r-4 border-t-4 border-lana-purple rounded-tr-2xl" />
-                <div className="absolute bottom-2 left-2 w-10 h-10 border-l-4 border-b-4 border-lana-purple rounded-bl-2xl" />
-                <div className="absolute bottom-2 right-2 w-10 h-10 border-r-4 border-b-4 border-lana-purple rounded-br-2xl" />
-              </div>
-            )}
-          </div>
-
-          {error && <p className="text-sm text-destructive">{error}</p>}
-
+      {error && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-lana-ink/85 text-white gap-3 p-6 text-center">
+          <AlertCircle className="w-8 h-8 text-red-300" />
+          <p className="text-xs">{error}</p>
           <button
-            onClick={handleClose}
-            className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-white/80 hover:bg-white py-3 font-medium transition"
+            type="button"
+            onClick={onStop}
+            className="text-xs rounded-full bg-white/15 hover:bg-white/25 px-4 py-2 transition"
           >
-            <X className="w-4 h-4" />
-            Prekliči
+            Zapri
           </button>
         </div>
-      </DialogContent>
-    </Dialog>
+      )}
+
+      {ready && (
+        <>
+          <div className="pointer-events-none absolute inset-3">
+            <div className="absolute top-0 left-0 w-9 h-9 border-l-4 border-t-4 border-lana-purpleSoft rounded-tl-2xl" />
+            <div className="absolute top-0 right-0 w-9 h-9 border-r-4 border-t-4 border-lana-purpleSoft rounded-tr-2xl" />
+            <div className="absolute bottom-0 left-0 w-9 h-9 border-l-4 border-b-4 border-lana-purpleSoft rounded-bl-2xl" />
+            <div className="absolute bottom-0 right-0 w-9 h-9 border-r-4 border-b-4 border-lana-purpleSoft rounded-br-2xl" />
+          </div>
+
+          <button
+            type="button"
+            onClick={onStop}
+            className="absolute top-2 right-2 w-9 h-9 rounded-full bg-black/55 hover:bg-black/75 text-white flex items-center justify-center backdrop-blur-sm transition"
+            aria-label="Zapri skener"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </>
+      )}
+    </div>
   );
 }

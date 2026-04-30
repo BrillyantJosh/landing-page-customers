@@ -4,14 +4,14 @@ import { Lock, ScanLine, ShieldCheck, Zap, Eye, Loader2, AlertCircle } from "luc
 import { LanaLogo } from "@/components/LanaLogo";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { RotatingBackground } from "@/components/RotatingBackground";
-import { QRScanner } from "@/components/QRScanner";
+import { InlineWifScanner } from "@/components/InlineWifScanner";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { convertWifToIds } from "@/lib/crypto";
 
 export default function Landing() {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const [scannerOpen, setScannerOpen] = useState(false);
+  const [scanning, setScanning] = useState(false);
   const [manualWif, setManualWif] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,6 +19,7 @@ export default function Landing() {
   const processWif = async (wif: string) => {
     setLoading(true);
     setError(null);
+    setScanning(false);
     try {
       const ids = await convertWifToIds(wif);
       navigate(`/check/${ids.nostrHexId}`, { state: ids });
@@ -85,34 +86,39 @@ export default function Landing() {
                   {t.scan_card_subtitle}
                 </p>
 
-                {/* Scan frame */}
-                <button
-                  type="button"
-                  onClick={() => setScannerOpen(true)}
-                  disabled={loading}
-                  className="scan-frame w-full aspect-[5/3] hover:bg-lana-lavender/30 transition group disabled:opacity-50"
-                >
-                  {loading ? (
+                {/* Scan frame — camera renders inline when scanning */}
+                <div className="scan-frame w-full aspect-[5/3] relative overflow-hidden">
+                  {scanning ? (
+                    <InlineWifScanner
+                      active={scanning}
+                      onScan={processWif}
+                      onStop={() => setScanning(false)}
+                    />
+                  ) : loading ? (
                     <div className="flex flex-col items-center gap-2 text-lana-purple">
                       <Loader2 className="w-10 h-10 animate-spin" />
                       <span className="text-sm font-medium">{t.loading}</span>
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center gap-3 text-center">
+                    <button
+                      type="button"
+                      onClick={() => setScanning(true)}
+                      className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center hover:bg-lana-lavender/30 transition group rounded-3xl"
+                    >
                       <div className="w-32 sm:w-40 h-20 sm:h-24 rounded-2xl bg-gradient-to-br from-lana-purpleSoft via-lana-purple to-lana-ink shadow-lg flex items-center justify-center text-white relative overflow-hidden">
                         <img src="/lana-favicon.png" alt="" className="w-7 h-7 absolute left-3 top-3 invert opacity-90" />
                         <span className="font-display text-2xl sm:text-3xl tracking-wide">Lana</span>
                         <span className="absolute right-2 top-2 text-[8px] opacity-70">((•))</span>
                       </div>
                       <ScanLine className="w-5 h-5 text-lana-purple group-hover:scale-110 transition" />
-                    </div>
+                    </button>
                   )}
-                </button>
+                </div>
 
                 {/* Status */}
                 <div className="mt-5 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                  <span className="w-2 h-2 rounded-full bg-lana-purple animate-pulse-soft" />
-                  <span>{t.scan_ready}</span>
+                  <span className={`w-2 h-2 rounded-full ${scanning ? "bg-emerald-500" : "bg-lana-purple"} animate-pulse-soft`} />
+                  <span>{scanning ? t.scan_active : t.scan_ready}</span>
                 </div>
 
                 {/* Manual paste */}
@@ -167,14 +173,6 @@ export default function Landing() {
           </footer>
         </main>
       </div>
-
-      <QRScanner
-        isOpen={scannerOpen}
-        onClose={() => setScannerOpen(false)}
-        onScan={processWif}
-        title={t.scan_card_title}
-        description={t.scan_card_subtitle}
-      />
     </>
   );
 }

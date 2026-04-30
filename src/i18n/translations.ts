@@ -29,6 +29,7 @@ type TranslationKeys = {
   scan_card_title: string;
   scan_card_subtitle: string;
   scan_ready: string;
+  scan_active: string;
   scan_button: string;
   scan_or_paste: string;
   paste_placeholder: string;
@@ -68,6 +69,7 @@ export const TRANSLATIONS: Record<Language, TranslationKeys> = {
     scan_card_title: "Skeniraj Lana WIF ključ",
     scan_card_subtitle: "Pripravi svoj ključ in ga približaj območju skeniranja.",
     scan_ready: "Pripravljeno za skeniranje",
+    scan_active: "Skeniram…",
     scan_button: "Skeniraj WIF ključ",
     scan_or_paste: "ali prilepi ročno",
     paste_placeholder: "Prilepi WIF ključ…",
@@ -105,6 +107,7 @@ export const TRANSLATIONS: Record<Language, TranslationKeys> = {
     scan_card_title: "Scan Lana WIF key",
     scan_card_subtitle: "Hold your key close to the scan area.",
     scan_ready: "Ready to scan",
+    scan_active: "Scanning…",
     scan_button: "Scan WIF key",
     scan_or_paste: "or paste manually",
     paste_placeholder: "Paste WIF key…",
@@ -142,6 +145,7 @@ export const TRANSLATIONS: Record<Language, TranslationKeys> = {
     scan_card_title: "Lana WIF Schlüssel scannen",
     scan_card_subtitle: "Halte deinen Schlüssel an den Scanbereich.",
     scan_ready: "Bereit zum Scannen",
+    scan_active: "Scanne…",
     scan_button: "WIF Schlüssel scannen",
     scan_or_paste: "oder manuell einfügen",
     paste_placeholder: "WIF Schlüssel einfügen…",
@@ -179,6 +183,7 @@ export const TRANSLATIONS: Record<Language, TranslationKeys> = {
     scan_card_title: "Scansiona chiave WIF Lana",
     scan_card_subtitle: "Avvicina la tua chiave all'area di scansione.",
     scan_ready: "Pronto per la scansione",
+    scan_active: "Scansione…",
     scan_button: "Scansiona chiave WIF",
     scan_or_paste: "o incolla manualmente",
     paste_placeholder: "Incolla chiave WIF…",
