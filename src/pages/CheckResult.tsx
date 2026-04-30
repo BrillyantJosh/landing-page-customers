@@ -32,7 +32,6 @@ interface Kind0Profile {
   currency?: string;
 }
 
-const CURRENCIES = ["EUR", "USD", "GBP"];
 const APP_LOGIN_URL = "https://app.mejmosefajn.org";
 
 export default function CheckResult() {
@@ -126,12 +125,7 @@ export default function CheckResult() {
     }
   };
 
-  const handleCurrencyChange = (cur: string) => {
-    setCurrency(cur);
-    if (registration?.registered) fetchBalance(cur);
-  };
-
-  const profileName = profile?.display_name || profile?.name;
+const profileName = profile?.display_name || profile?.name;
 
   if (!state) {
     return (
@@ -254,22 +248,6 @@ export default function CheckResult() {
                         </p>
                       )}
 
-                      <div className="pt-4 flex items-center justify-center gap-2">
-                        <span className="text-xs text-muted-foreground mr-1">Valuta:</span>
-                        {CURRENCIES.map((c) => (
-                          <button
-                            key={c}
-                            onClick={() => handleCurrencyChange(c)}
-                            className={`text-xs font-semibold rounded-full px-3 py-1.5 transition ${
-                              currency === c
-                                ? "bg-lana-purple text-white"
-                                : "bg-white/70 text-foreground/70 hover:bg-white border border-border/70"
-                            }`}
-                          >
-                            {c}
-                          </button>
-                        ))}
-                      </div>
                     </>
                   ) : (
                     <p className="text-sm text-muted-foreground py-4">—</p>
