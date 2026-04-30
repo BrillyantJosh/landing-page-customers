@@ -41,7 +41,7 @@ export function LanaCardMock({ qrValue = "https://www.mejmosefajn.org" }: Props)
       {/* QR code overlay positioned on the white square */}
       <div
         className="absolute flex items-center justify-center"
-        style={{ top: "16%", left: "32%", width: "36%", aspectRatio: "1 / 1" }}
+        style={{ top: "22%", left: "37%", width: "26%", aspectRatio: "1 / 1" }}
       >
         {qrSrc ? (
           <img src={qrSrc} alt="QR" className="block w-full h-full" draggable={false} />

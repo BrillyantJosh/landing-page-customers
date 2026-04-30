@@ -155,15 +155,13 @@ export default function Landing() {
                 </form>
               </div>
 
-              {/* Privacy note */}
+              {/* About note */}
               <div className="glass-card p-4 flex items-start gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-lana-lavender flex items-center justify-center shrink-0">
                   <Lock className="w-5 h-5 text-lana-purple" />
                 </div>
                 <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed">
-                  Tvoje podatke obdelujemo varno in zasebno.
-                  <br />
-                  Nič ni shranjeno. Samo ti vidiš svoje stanje.
+                  Lana je skupina ljudi, ki gradi lastno zavedanje delovanja realnosti. Z majhnimi koraki preoblikujemo našo realnost v nekaj več. Stvari, ki jih boste pri nas doživeli, se morda slišijo nemogoče, a tisti, ki si boste dovolili poglobiti svoje zavedanje, boste spoznali, da posnemamo naravo.
                 </p>
               </div>
             </section>
