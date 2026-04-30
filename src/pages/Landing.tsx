@@ -58,13 +58,13 @@ export default function Landing() {
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-7xl w-full mx-auto">
             {/* LEFT: hero copy */}
             <section className="space-y-8 animate-fade-in">
-              <h1 className="font-display font-semibold leading-[1.05] text-5xl sm:text-6xl lg:text-7xl text-lana-ink">
+              <h1 className="hero-glow font-display font-semibold leading-[1.05] text-5xl sm:text-6xl lg:text-7xl text-lana-ink">
                 Preveri <span className="text-gradient-purple">stanje</span>
                 <br />
                 na svojem računu
               </h1>
 
-              <p className="text-lg sm:text-xl text-foreground/85 max-w-md font-medium">
+              <p className="hero-glow-soft text-lg sm:text-xl text-lana-ink/95 max-w-md font-semibold">
                 Lana preoblikuje finančno realnost v nekaj več, kar meji na čarovnijo.
               </p>
 
