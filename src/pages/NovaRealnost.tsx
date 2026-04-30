@@ -6,7 +6,7 @@ import { RotatingBackground } from "@/components/RotatingBackground";
 const APP_LOGIN_URL = "https://app.mejmosefajn.org";
 
 const PARAGRAPHS = [
-  "Trenutna realnost je takšna, kot je. Ne obsojamo je in je ne popravljamo, saj je zgolj odsev našega trenutnega zavedanja.",
+  "Trenutna realnost je takšna kot je. Ne obsojamo je in je ne popravljamo, saj je zgolj odsev našega trenutnega zavedanja.",
   "Če želimo ustvariti novo realnost, se moramo najprej preoblikovati sami — vsak pri sebi. Šele nato lahko kot zgled začnemo preoblikovati tudi svet okoli sebe.",
   "Če v sebi čutite vzgib po spremembi realnosti — kar se danes pogosto izraža skozi politični prostor — potem ste za nas dragoceni. A prvi korak je iskrenost do samega sebe. Star način razmišljanja nas drži v prepričanju, da se spremembe lahko zgodijo le, če »pravi« ljudje pridejo na oblast.",
   "Začnimo pri osnovi: če verjamete, da je s trenutno politiko vse narobe in da ste vi edini, ki lahko to spremenite, potem postanete le nov del istega problema. To je treba preseči.",
@@ -15,7 +15,7 @@ const PARAGRAPHS = [
   "Začnete lahko v svojem lokalnem okolju — z uvajanjem semena obilja, brezpogojne samoodgovornosti in uravnoteženja različnih perspektiv. Najtežje je ustvariti okolje, kjer so vsi vključeni in podprti — in to zmore le nekdo, ki gradi zavedanje.",
   "Začnite z majhnimi koraki. Ko boste znali ohranjati harmonijo v manjših skupinah, boste lahko postopoma prehajali v večje sisteme, kjer bo vašemu zgledu sledilo vedno več ljudi. A zapomnite si: niste tukaj, da vodite druge, temveč da jih navdihnete. Ljudem vračate moč tako, da jih spodbudite, da sami preoblikujejo sebe — ne tako, da rešujete njihove probleme namesto njih.",
   "Oblast ne pomeni podajanja rešitev na stare probleme. To je le ponavljanje nasprotij — ena stran trdi eno, druga drugo. Resnična moč je v tem, da razumete, kako nasprotja delujejo skupaj, in znate obe perspektivi povezati v nekaj več.",
-  "Kot pri kolesu: levo in desno kolo morata delovati usklajeno. Če se nagnete le na eno stran, vožnja ne traja dolgo. Ravnovesje je ključno.",
+  "Kot pri kolesu: leva in desna stran morata delovati usklajeno. Če se nagnete le na eno stran, vožnja ne traja dolgo. Ravnovesje je ključno.",
   "Zato vsak, ki čuti klic po »politični« poti, naj začne z gradnjo zavedanja — najprej pri sebi, nato v svojem okolju. Le tako lahko postane del resničnega preoblikovanja naše realnosti v nekaj več.",
 ];
 
