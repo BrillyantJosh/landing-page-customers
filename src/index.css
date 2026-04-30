@@ -63,10 +63,14 @@
   }
 
   .text-gradient-purple {
-    background: linear-gradient(135deg, #7C5CFF 0%, #B8A4FF 100%);
+    background: linear-gradient(135deg, #5B30E8 0%, #7C5CFF 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    text-shadow:
+      0 0 24px rgba(255, 255, 255, 1),
+      0 0 10px rgba(255, 255, 255, 0.95),
+      0 2px 6px rgba(60, 20, 160, 0.35);
   }
 
   .hero-glow {
