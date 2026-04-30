@@ -11,10 +11,10 @@ const PORTALS = [
   { name: "Lana Restavracije", desc: "Hrana & pijača", url: "https://lana.restaurant" },
   { name: "Lana Lepota & Nega", desc: "Kozmetika & wellness", url: "https://lanabeauty.care" },
   { name: "Lana Moda", desc: "Oblačila & modni dodatki", url: "https://lana.fashion" },
+  { name: "Lana Gradnja", desc: "Materiali & storitve", url: "https://lana.construction" },
   { name: "Lana Pohištvo", desc: "Dom & oprema", url: "https://lana.furniture" },
   { name: "Lana Otroci", desc: "Igrače & otroški svet", url: "https://lana.kids" },
   { name: "Lana Hišni ljubljenčki", desc: "Hrana & oprema za živali", url: "https://lana.pet" },
-  { name: "Lana Gradnja", desc: "Materiali & storitve", url: "https://lana.construction" },
   { name: "Lana Počitnice", desc: "Potovanja & nastanitve", url: "https://lana.vacations" },
   { name: "Lana Tržnica", desc: "Splošna tržnica", url: null },
 ];
