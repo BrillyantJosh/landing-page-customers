@@ -59,7 +59,11 @@ export default function Landing() {
             {/* LEFT: hero copy */}
             <section className="space-y-8 animate-fade-in">
               <h1 className="hero-glow font-display font-semibold leading-[1.05] text-5xl sm:text-6xl lg:text-7xl text-lana-ink">
-                Preveri <span className="text-gradient-purple">stanje</span>
+                Preveri{" "}
+                <span className="relative inline-block">
+                  <span className="absolute -inset-x-3 -inset-y-1.5 rounded-2xl bg-white/65 backdrop-blur-sm -z-10" />
+                  <span className="text-gradient-purple">stanje</span>
+                </span>
                 <br />
                 na svojem računu
               </h1>
