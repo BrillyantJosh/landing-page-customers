@@ -70,8 +70,7 @@ export default function KakoDodenarnice() {
                 </p>
                 <p>
                   Lana denarnica je vaša osebna odgovornost. Nihče drug ne skrbi zanjo namesto vas — vi ste
-                  edini imetnik ključa. To je svoboda in odgovornost hkrati. Kartico hranite varno, ključ
-                  pa nikoli ne delite z nikomer.
+                  edini imetnik ključa. To je svoboda in odgovornost hkrati. Kartico hranite varno, ključa pa ne delite.
                 </p>
 
                 <p className="pt-2 font-semibold text-lana-ink">Poiščite partnerja v enem od naših portalov:</p>
