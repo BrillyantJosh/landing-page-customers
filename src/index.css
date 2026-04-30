@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 35% 96%;
+    --foreground: 240 35% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 35% 18%;
+
+    --primary: 252 100% 68%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 250 60% 92%;
+    --secondary-foreground: 240 35% 22%;
+
+    --muted: 240 10% 94%;
+    --muted-foreground: 240 12% 42%;
+
+    --accent: 252 80% 92%;
+    --accent-foreground: 240 35% 22%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 14% 88%;
+    --input: 240 14% 88%;
+    --ring: 252 100% 68%;
+
+    --radius: 1.25rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body,
+  #root {
+    @apply min-h-full;
+  }
+
+  body {
+    @apply font-sans text-foreground antialiased;
+    background-color: hsl(var(--background));
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-3xl bg-white/70 backdrop-blur-xl shadow-[0_30px_80px_-30px_rgba(40,30,90,0.35)] border border-white/40;
+  }
+
+  .glass-pill {
+    @apply inline-flex items-center gap-2 rounded-full bg-white/65 backdrop-blur-md border border-white/40 px-3 py-2 text-xs text-foreground/80 shadow-sm;
+  }
+
+  .scan-frame {
+    @apply relative rounded-3xl border-2 border-dashed border-lana-purple/60 bg-gradient-to-br from-lana-lavender/40 via-white/30 to-lana-purpleSoft/30 p-6 flex items-center justify-center;
+    box-shadow: inset 0 0 30px rgba(124, 92, 255, 0.12);
+  }
+
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #7C5CFF 0%, #B8A4FF 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.bg-fade-enter {
+  opacity: 0;
+}
+.bg-fade-enter-active {
+  opacity: 1;
+  transition: opacity 1.4s ease-in-out;
+}
+.bg-fade-exit {
+  opacity: 1;
+}
+.bg-fade-exit-active {
+  opacity: 0;
+  transition: opacity 1.4s ease-in-out;
+}

@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  landing-page-customers-web:
+    build: .
+    container_name: landing-page-customers-web
+    restart: unless-stopped
+    environment:
+      - SERVER_PORT=3008
+      - LANA_PAYS_CHECK_URL=http://lana-pays-check-web:3007
+      - VIRTUAL_HOST=mejmosefajn.org,www.mejmosefajn.org
+      - VIRTUAL_PORT=3008
+      - LETSENCRYPT_HOST=mejmosefajn.org,www.mejmosefajn.org
+      - LETSENCRYPT_EMAIL=josh@lanaworld.app
+    networks:
+      - webproxy
+
+networks:
+  webproxy:
+    external: true
