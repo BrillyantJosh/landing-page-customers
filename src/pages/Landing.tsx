@@ -192,7 +192,7 @@ export default function Landing() {
                   <Lock className="w-5 h-5 text-lana-purple" />
                 </div>
                 <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed">
-                  Lana je skupina ljudi, ki gradi lastno zavedanje delovanja realnosti. Z majhnimi koraki preoblikujemo našo realnost v nekaj več. Stvari, ki jih boste pri nas doživeli, se morda slišijo nemogoče, a tisti, ki si boste dovolili poglobiti svoje zavedanje, boste spoznali, da posnemamo naravo.
+                  Lana je skupina ljudi, ki gradi lastno zavedanje delovanja realnosti. Z majhnimi koraki preoblikujemo našo realnost v nekaj več. Stvari, ki jih boste pri nas doživeli, se morda slišijo nemogoče, a tisti, ki si boste dovolili poglobiti svoje zavedanje, boste spoznali, da v resnici sledimo preprostim principom narave.
                 </p>
               </div>
             </section>
