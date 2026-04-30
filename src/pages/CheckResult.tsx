@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { ArrowLeft, CheckCircle, AlertCircle, Loader2, Snowflake, Sparkles, Wallet, LogIn } from "lucide-react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  ArrowLeft, CheckCircle, AlertCircle, Loader2, Snowflake, Sparkles,
+  Wallet, LogIn, User, ShoppingBag, Star,
+} from "lucide-react";
 import { LanaLogo } from "@/components/LanaLogo";
 import { RotatingBackground } from "@/components/RotatingBackground";
 import type { LanaIds } from "@/lib/crypto";
@@ -22,13 +25,23 @@ interface RegistrationResult {
   wallet_type?: string;
 }
 
+interface Kind0Profile {
+  name?: string;
+  display_name?: string;
+  picture?: string;
+  currency?: string;
+}
+
 const CURRENCIES = ["EUR", "USD", "GBP"];
 const APP_LOGIN_URL = "https://app.mejmosefajn.org";
 
 export default function CheckResult() {
   const { hexId } = useParams<{ hexId: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state as LanaIds | null;
+
+  const [profile, setProfile] = useState<Kind0Profile | null>(null);
 
   const [currency, setCurrency] = useState<string>(() => {
     if (typeof window !== "undefined") {
@@ -45,6 +58,22 @@ export default function CheckResult() {
   const [balLoading, setBalLoading] = useState(false);
 
   const [accountFrozen, setAccountFrozen] = useState<boolean | null>(null);
+
+  // Fetch KIND 0 profile to get name + preferred currency
+  useEffect(() => {
+    if (!hexId) return;
+    fetch(`/api/profile/${hexId}`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((data: Kind0Profile | null) => {
+        if (!data) return;
+        setProfile(data);
+        // Use profile currency as default if no localStorage override
+        if (!window.localStorage.getItem("lana-landing-currency") && data.currency) {
+          setCurrency(data.currency);
+        }
+      })
+      .catch(() => {});
+  }, [hexId]);
 
   useEffect(() => {
     if (!state) return;
@@ -108,6 +137,8 @@ export default function CheckResult() {
     if (registration?.registered) fetchBalance(cur);
   };
 
+  const profileName = profile?.display_name || profile?.name;
+
   if (!state) {
     return (
       <>
@@ -150,6 +181,23 @@ export default function CheckResult() {
               </Link>
               <h1 className="font-display text-2xl font-semibold text-lana-ink">Stanje računa</h1>
             </div>
+
+            {/* Profile owner */}
+            {profileName && (
+              <div className="glass-card px-5 py-3 flex items-center gap-3">
+                {profile?.picture ? (
+                  <img src={profile.picture} alt="" className="w-9 h-9 rounded-full object-cover border border-white/60" />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-lana-lavender flex items-center justify-center shrink-0">
+                    <User className="w-5 h-5 text-lana-purple" />
+                  </div>
+                )}
+                <div>
+                  <p className="text-xs text-muted-foreground leading-none mb-0.5">Imetnik računa</p>
+                  <p className="font-semibold text-lana-ink text-sm">{profileName}</p>
+                </div>
+              </div>
+            )}
 
             {regLoading ? (
               <div className="glass-card p-10 flex flex-col items-center gap-3">
@@ -234,6 +282,32 @@ export default function CheckResult() {
                   )}
                 </div>
 
+                {/* Action buttons */}
+                <div className="grid grid-cols-3 gap-3">
+                  <ActionButton
+                    icon={<User className="w-5 h-5 text-lana-purple" />}
+                    label="Moj profil"
+                    desc="Uredi svoje podatke"
+                    onClick={() =>
+                      navigate("/moj-profil", {
+                        state: { hexId, privateKeyHex: state.privateKeyHex },
+                      })
+                    }
+                  />
+                  <ActionButton
+                    icon={<ShoppingBag className="w-5 h-5 text-lana-purple" />}
+                    label="Kje potrošim?"
+                    desc="Partnerji v omrežju"
+                    onClick={() => navigate("/kako-do-denarnice")}
+                  />
+                  <ActionButton
+                    icon={<Star className="w-5 h-5 text-lana-purple" />}
+                    label="Lana8Wonder"
+                    desc="Renta program"
+                    onClick={() => navigate("/lana8wonder")}
+                  />
+                </div>
+
                 <div className="flex justify-center">
                   <Link
                     to="/"
@@ -265,5 +339,28 @@ export default function CheckResult() {
         </footer>
       </div>
     </>
+  );
+}
+
+function ActionButton({
+  icon, label, desc, onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  desc: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="glass-card p-4 flex flex-col items-center gap-2 text-center hover:bg-white/85 hover:scale-[1.02] transition-transform"
+    >
+      <div className="w-10 h-10 rounded-2xl bg-lana-lavender flex items-center justify-center">
+        {icon}
+      </div>
+      <p className="text-xs font-semibold text-lana-ink leading-tight">{label}</p>
+      <p className="text-[10px] text-muted-foreground leading-tight">{desc}</p>
+    </button>
   );
 }

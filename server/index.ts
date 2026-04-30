@@ -15,6 +15,7 @@ import express from "express";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import { fetchKind0Profile, broadcastEvent } from "./lib/nostr.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -65,6 +66,37 @@ app.get("/api/balance/:address", async (req, res) => {
   } catch (err) {
     console.error("[proxy] balance failed:", err);
     res.status(502).json({ error: "Upstream unavailable" });
+  }
+});
+
+// ─── Profile: fetch KIND 0 from relays ───────────────────
+app.get("/api/profile/:hexId", async (req, res) => {
+  const { hexId } = req.params;
+  if (!hexId || hexId.length !== 64 || !/^[0-9a-f]+$/.test(hexId)) {
+    return res.status(400).json({ error: "Invalid hex ID" });
+  }
+  try {
+    const profile = await fetchKind0Profile(hexId);
+    if (!profile) return res.status(404).json({ error: "Profile not found" });
+    res.json(profile);
+  } catch (err) {
+    console.error("[profile] fetch failed:", err);
+    res.status(502).json({ error: "Relay unavailable" });
+  }
+});
+
+// ─── Broadcast pre-signed Nostr event to relays ──────────
+app.post("/api/broadcast-event", async (req, res) => {
+  const { event } = req.body;
+  if (!event || !event.id || !event.pubkey || !event.sig) {
+    return res.status(400).json({ error: "Invalid event" });
+  }
+  try {
+    const result = await broadcastEvent(event);
+    res.json({ success: result.success.length > 0, relays: result });
+  } catch (err) {
+    console.error("[broadcast] failed:", err);
+    res.status(502).json({ error: "Broadcast failed" });
   }
 });
 

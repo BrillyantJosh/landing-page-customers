@@ -4,6 +4,8 @@ import CheckResult from "./pages/CheckResult";
 import PravicaDoObilja from "./pages/PravicaDoObilja";
 import KakoDodenarnice from "./pages/KakoDodenarnice";
 import NovaRealnost from "./pages/NovaRealnost";
+import MojProfil from "./pages/MojProfil";
+import Lana8Wonder from "./pages/Lana8Wonder";
 
 export default function App() {
   return (
@@ -13,6 +15,8 @@ export default function App() {
       <Route path="/pravica-do-obilja" element={<PravicaDoObilja />} />
       <Route path="/kako-do-denarnice" element={<KakoDodenarnice />} />
       <Route path="/nova-realnost" element={<NovaRealnost />} />
+      <Route path="/moj-profil" element={<MojProfil />} />
+      <Route path="/lana8wonder" element={<Lana8Wonder />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
