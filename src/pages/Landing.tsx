@@ -95,7 +95,7 @@ export default function Landing() {
                 </p>
 
                 {/* Scan frame — camera renders inline when scanning */}
-                <div className="scan-frame w-full aspect-[5/3] relative overflow-hidden p-0">
+                <div className="scan-frame w-full aspect-[3/2] relative overflow-hidden p-0">
                   {scanning ? (
                     <InlineWifScanner
                       active={scanning}
