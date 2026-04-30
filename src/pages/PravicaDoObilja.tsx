@@ -71,7 +71,7 @@ export default function PravicaDoObilja() {
                   <ul className="space-y-2.5 pl-1">
                     {PRINCIPLES.map((p, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <span className="mt-2 w-1.5 h-1.5 rounded-full bg-lana-purple shrink-0" />
+                        <span className="mt-3 w-1.5 h-1.5 rounded-full bg-lana-purple shrink-0" />
                         <span>{p}</span>
                       </li>
                     ))}
