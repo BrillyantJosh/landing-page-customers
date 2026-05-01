@@ -1,4 +1,4 @@
-const BACKGROUND_IMAGE = "/bg/mandala-sunset.png";
+const BACKGROUND_IMAGE = "/bg/lana-gold.png";
 
 export function RotatingBackground() {
   return (
