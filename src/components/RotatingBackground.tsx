@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-const IMAGES = ["/bg/lana-mountain.png", "/bg/lana-meadow.png"];
+const IMAGES = [
+  { src: "/bg/lana-mountain.png", pan: true },
+  { src: "/bg/lana-meadow.png", pan: true },
+  { src: "/bg/lana-cottage.png", pan: false },
+];
 const INTERVAL_MS = 8000;
 
 export function RotatingBackground() {
@@ -20,12 +24,12 @@ export function RotatingBackground() {
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden">
-      {IMAGES.map((src, i) => (
+      {IMAGES.map((img, i) => (
         <div
-          key={src}
-          className="absolute inset-0 bg-cover bg-center animate-bg-pan"
+          key={img.src}
+          className={`absolute inset-0 bg-cover bg-center${img.pan ? " animate-bg-pan" : ""}`}
           style={{
-            backgroundImage: `url(${src})`,
+            backgroundImage: `url(${img.src})`,
             opacity: i === current ? (fading ? 0 : 1) : 0,
             transition: "opacity 1.4s ease-in-out",
           }}
