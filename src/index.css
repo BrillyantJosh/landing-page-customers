@@ -10,24 +10,24 @@
     --card: 0 0% 100%;
     --card-foreground: 240 35% 18%;
 
-    --primary: 252 100% 68%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 250 60% 92%;
-    --secondary-foreground: 240 35% 22%;
+    --secondary: 213 97% 87%;
+    --secondary-foreground: 220 35% 22%;
 
-    --muted: 240 10% 94%;
-    --muted-foreground: 240 12% 42%;
+    --muted: 220 14% 94%;
+    --muted-foreground: 220 12% 42%;
 
-    --accent: 252 80% 92%;
-    --accent-foreground: 240 35% 22%;
+    --accent: 213 100% 87%;
+    --accent-foreground: 220 35% 22%;
 
     --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 14% 88%;
-    --input: 240 14% 88%;
-    --ring: 252 100% 68%;
+    --border: 220 14% 88%;
+    --input: 220 14% 88%;
+    --ring: 217 91% 60%;
 
     --radius: 1.25rem;
   }
@@ -63,7 +63,7 @@
   }
 
   .text-gradient-purple {
-    background: linear-gradient(135deg, #5B30E8 0%, #7C5CFF 100%);
+    background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -85,6 +85,12 @@
       0 2px 18px rgba(255, 255, 255, 0.8),
       0 0 8px rgba(255, 255, 255, 0.6);
   }
+}
+
+/* Recolor purple Lana logo → blue to match new theme */
+img[src*="lana-favicon"],
+img[src*="lana-mark"] {
+  filter: hue-rotate(-35deg) saturate(0.92);
 }
 
 .bg-fade-enter {
