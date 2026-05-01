@@ -67,7 +67,7 @@ export default function ZivljenjeJeLepo() {
                 <div className="border-t border-foreground/10 pt-4 space-y-4">
                   <p className="font-semibold text-lana-ink">In za tiste malo bolj »ostre« poglede 😉</p>
 
-                  <p>Morda se bo kdo ob tem zapisal kot preveč sanjaškem. Razumljivo — tudi sam sem nekoč razmišljal podobno.</p>
+                  <p>Morda se bo kdo zdrznil ob tem zapisu, češ, da je sanjaški. Razumljivo — tudi sam sem nekoč razmišljal podobno.</p>
 
                   <p>A sčasoma sem opazil, da me nenehno analiziranje in prepričanje, da moram vse razumeti, oddaljujeta od občutka miru. Ko sem si dovolil ne vedeti in zaupati, da se prave stvari razkrijejo ob pravem času, se je vse umirilo.</p>
 
@@ -75,7 +75,7 @@ export default function ZivljenjeJeLepo() {
 
                   <p>To je tisto, kar imenujemo sreča. Zato smo tukaj — da jo živimo.</p>
 
-                  <p>Če lahko naši izdelki, ustvarjeni iz teh načel, prispevajo k skupni sreči, potem je naš namen več kot izpolnjen.</p>
+                  <p>Če lahko naši izdelki in storitve, ustvarjeni iz teh načel, prispevajo k skupni sreči, potem je naš namen več kot izpolnjen.</p>
 
                   <p className="font-semibold text-lana-ink">Želimo vam lepo življenje.<br />Ker prav to iščemo vsi.</p>
                 </div>
