@@ -269,7 +269,7 @@ const profileName = profile?.display_name || profile?.name;
                   <ActionButton
                     icon={<ShoppingBag className="w-5 h-5 text-lana-purple" />}
                     label="Kje potrošim?"
-                    desc="Partnerji v omrežju"
+                    desc="Ponudniki v omrežju"
                     onClick={() => navigate("/kje-potrosim")}
                   />
                   <ActionButton
