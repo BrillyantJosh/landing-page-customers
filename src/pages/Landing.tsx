@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Lock, Sparkles, Wallet, Globe2, Loader2, AlertCircle, LogIn } from "lucide-react";
+import { Lock, Sparkles, Heart, Globe2, Loader2, AlertCircle, LogIn, Wallet } from "lucide-react";
 import { LanaLogo } from "@/components/LanaLogo";
 import { RotatingBackground } from "@/components/RotatingBackground";
 import { InlineWifScanner } from "@/components/InlineWifScanner";
@@ -76,15 +76,15 @@ export default function Landing() {
                   </div>
                 </Link>
                 <Link
-                  to="/kako-do-denarnice"
+                  to="/zivljenje-je-lepo"
                   className="glass-pill px-4 py-2.5 hover:bg-white/85 hover:scale-[1.02] transition-transform"
                 >
                   <div className="w-6 h-6 rounded-full bg-lana-lavender flex items-center justify-center shrink-0">
-                    <Wallet className="w-4 h-4 text-lana-purple" />
+                    <Heart className="w-4 h-4 text-lana-purple" />
                   </div>
                   <div className="leading-tight text-left">
-                    <p className="text-sm font-semibold text-lana-ink">Kako do denarnice?</p>
-                    <p className="text-[11px] text-muted-foreground">Poišči ponudnika</p>
+                    <p className="text-sm font-semibold text-lana-ink">Življenje je lepo</p>
+                    <p className="text-[11px] text-muted-foreground">Spoznanje</p>
                   </div>
                 </Link>
                 <Link

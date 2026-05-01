@@ -7,6 +7,7 @@ import NovaRealnost from "./pages/NovaRealnost";
 import MojProfil from "./pages/MojProfil";
 import Lana8Wonder from "./pages/Lana8Wonder";
 import KjePotrosim from "./pages/KjePotrosim";
+import ZivljenjeJeLepo from "./pages/ZivljenjeJeLepo";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       <Route path="/pravica-do-obilja" element={<PravicaDoObilja />} />
       <Route path="/kako-do-denarnice" element={<KakoDodenarnice />} />
       <Route path="/nova-realnost" element={<NovaRealnost />} />
+      <Route path="/zivljenje-je-lepo" element={<ZivljenjeJeLepo />} />
       <Route path="/moj-profil" element={<MojProfil />} />
       <Route path="/lana8wonder" element={<Lana8Wonder />} />
       <Route path="/kje-potrosim" element={<KjePotrosim />} />
