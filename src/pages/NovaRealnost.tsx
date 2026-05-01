@@ -16,7 +16,9 @@ const PARAGRAPHS = [
   "Začnite z majhnimi koraki. Ko boste znali ohranjati harmonijo v manjših skupinah, boste lahko postopoma prehajali v večje sisteme, kjer bo vašemu zgledu sledilo vedno več ljudi. A zapomnite si: niste tukaj, da vodite druge, temveč da jih navdihnete. Ljudem vračate moč tako, da jih spodbudite, da sami preoblikujejo sebe — ne tako, da rešujete njihove probleme namesto njih.",
   "Oblast ne pomeni podajanja rešitev na stare probleme. To je le ponavljanje nasprotij — ena stran trdi eno, druga drugo. Resnična moč je v tem, da razumete, kako nasprotja delujejo skupaj, in znate obe perspektivi povezati v nekaj več.",
   "Kot pri kolesu: leva in desna stran morata delovati usklajeno. Če se nagnete le na eno stran, vožnja ne traja dolgo. Ravnovesje je ključno.",
-  "Zato vsak, ki čuti klic po »politični« poti, naj začne z gradnjo zavedanja — najprej pri sebi, nato v svojem okolju. Le tako lahko postane del resničnega preoblikovanja naše realnosti v nekaj več.",
+  "Zato naj vsak, ki čuti klic po »politični« poti, začne z gradnjo zavedanja — najprej pri sebi. Namesto da usmerja energijo v občutek, da je nekaj narobe in da je vse treba popraviti, naj se preoblikuje v zavedanje, da je življenje samo po sebi lepo.",
+  "Iz tega semena naj nato ustvarja lepe stvari zase in za okolico.",
+  "Začnite pri sebi.",
 ];
 
 export default function NovaRealnost() {
