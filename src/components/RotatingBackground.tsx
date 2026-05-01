@@ -6,6 +6,7 @@ const IMAGES = [
   { src: "/bg/lana-cottage.png", pan: false },
   { src: "/bg/lana-council.png", pan: false },
   { src: "/bg/lana-sky.png", pan: false },
+  { src: "/bg/lana-meditation.png", pan: false },
 ];
 const INTERVAL_MS = 8000;
 
