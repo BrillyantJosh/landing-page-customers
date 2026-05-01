@@ -87,11 +87,6 @@
   }
 }
 
-/* Recolor purple Lana logo → blue to match new theme */
-img[src*="lana-favicon"],
-img[src*="lana-mark"] {
-  filter: hue-rotate(-35deg) saturate(0.92);
-}
 
 .bg-fade-enter {
   opacity: 0;
