@@ -183,7 +183,7 @@ export default function Landing() {
 
           {/* Footer */}
           <footer className="mt-14 lg:mt-20 flex flex-col items-center gap-3 text-center">
-            <p className="text-sm text-foreground/70 italic font-medium">Lana. Preprosto. Več. Tvoje.</p>
+            <p className="text-sm text-foreground/70 italic font-medium">Lana. Preprosto. Lepo. Tvoje.</p>
             <div className="flex items-center gap-2 opacity-50">
               <div className="h-px w-16 bg-foreground/30" />
               <img src="/lana-favicon.png" alt="" className="w-4 h-4" />

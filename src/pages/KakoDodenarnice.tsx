@@ -128,7 +128,7 @@ export default function KakoDodenarnice() {
         </main>
 
         <footer className="px-6 sm:px-10 lg:px-16 pb-6 text-center">
-          <p className="text-xs text-foreground/60 italic">Lana. Preprosto. Več. Tvoje.</p>
+          <p className="text-xs text-foreground/60 italic">Lana. Preprosto. Lepo. Tvoje.</p>
         </footer>
       </div>
     </>
