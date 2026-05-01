@@ -6,6 +6,7 @@ const IMAGES = [
   "/bg/3.png",
   "/bg/4.png",
   "/bg/5.png",
+  "/bg/6.jpg",
 ];
 
 const ROTATE_MS = 7000;
