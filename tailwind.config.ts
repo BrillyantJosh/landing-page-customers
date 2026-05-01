@@ -64,8 +64,8 @@ export default {
           "100%": { opacity: "1" },
         },
         "bg-pan": {
-          "0%": { transform: "scale(1.04) translateX(0)" },
-          "100%": { transform: "scale(1.08) translateX(-1.5%)" },
+          "0%": { transform: "scale(1.01) translateX(0)" },
+          "100%": { transform: "scale(1.02) translateX(-0.8%)" },
         },
         "pulse-soft": {
           "0%, 100%": { opacity: "1" },
