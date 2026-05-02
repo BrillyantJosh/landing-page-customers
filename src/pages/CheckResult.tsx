@@ -211,7 +211,7 @@ const profileName = profile?.display_name || profile?.name;
                   <div className="glass-card p-5 flex items-start gap-3 bg-emerald-50/70 border-emerald-200/60">
                     <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0" />
                     <div>
-                      <p className="font-semibold text-foreground">Aktivni račun</p>
+                      <p className="font-semibold text-foreground">Aktiven račun</p>
                       <p className="text-xs text-muted-foreground mt-1">Tvoja sredstva so na voljo.</p>
                     </div>
                   </div>
@@ -275,7 +275,7 @@ const profileName = profile?.display_name || profile?.name;
                   <ActionButton
                     icon={<Star className="w-5 h-5 text-lana-purple" />}
                     label="Lana8Wonder"
-                    desc="Renta program"
+                    desc="Vstopnica za Obilje"
                     onClick={() => navigate("/lana8wonder")}
                   />
                 </div>
