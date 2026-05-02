@@ -265,7 +265,7 @@ export default function MojProfil() {
                 <p className="text-sm text-destructive">{fetchError}</p>
               ) : (
                 <div className="space-y-4">
-                  <Field label="Ime" value={profile.name || ""} onChange={(v) => set("name", v)} />
+                  <Field label="Ime in Priimek" value={profile.name || ""} onChange={(v) => set("name", v)} />
                   <Field label="Prikazno ime" value={profile.display_name || ""} onChange={(v) => set("display_name", v)} />
                   <Field label="O meni" value={profile.about || ""} onChange={(v) => set("about", v)} multiline />
                   <Field label="Slika (URL)" value={profile.picture || ""} onChange={(v) => set("picture", v)} />
