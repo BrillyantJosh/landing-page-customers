@@ -7,10 +7,10 @@ const APP_LOGIN_URL = "https://app.mejmosefajn.org";
 
 const PARAGRAPHS = [
   "Lana8Wonder je zasnovana tako, da dolgoročno vsakega posameznika v Novi Realnosti pripelje do točke, kjer premoženje njegove osebne denarnice zraste do ravni, ki mu omogoča življenje z najboljšim od najboljšega.",
-  "Te denarnice imajo posebno strukturo. Čeprav na prvi pogled delujejo, kot da vsaka zase vsebuje veliko premoženje, je resnica drugačna — seštevek vseh izgrajenih Lana8Wonder denarnic je vedno enak nič.",
+  "Te denarnice imajo posebno strukturo in čeprav na prvi pogled deluje, kot da vsaka zase vsebuje veliko premoženje, je v resnici seštevek vseh izgrajenih Lana8Wonder denarnic vedno enak nič.",
   "Njihovo delovanje lahko primerjamo z morsko gladino. Ko je morje mirno, je gladina na izhodiščni točki nič. Ko nastanejo valovi, je en val +10 cm, drugi pa −10 cm. Nato gravitacija en val spusti in drugega dvigne. Podobno kot zrak, ki si ga vsi izmenjujemo, tudi te denarnice delujejo kot uravnotežen sistem.",
   "Vsak posameznik ima tako na voljo dovolj sredstev za stvari, ki ga v življenju veselijo, hkrati pa skupna vrednost ostaja uravnotežena. V tej ekonomiji vrednost ni nekaj, kar bi neskončno raslo ali padalo — preprosto je. Zato ta sistem ne temelji na klasični gospodarski rasti, temveč na ravnovesju.",
-  "Lana8Wonder denarnica potrebuje čas, da zraste. Pridobite jo tako, da v protivrednosti 100 € v Lani zaklenete sredstva v Lana8Wonder, ki se nato postopoma vzpostavlja. Če vam do tega zneska zmanjka, lahko razliko dokupite, opravite nakup v sistemu ali pa preprosto počakate nekaj Splitov, da vrednost sama doseže 100 €. Izbira je vaša.",
+  "Lana8Wonder denarnica potrebuje čas, da zraste. Pridobite jo tako, da v Lana8Wonder zaklenete sredstva v Lanah v protivrednosti 100 €, ki se nato postopoma plemenitijo. Če vam do tega zneska manjkajo sredstva, lahko razliko dokupite, opravite dodatne nakupe v sistemu ali pa preprosto počakate nekaj Splitov, da vrednost sama doseže 100 €. Izbira je vaša.",
   "Pomembno je tudi, da nihče ne more v Lana8Wonder vložiti več kot ta znesek, prav tako ni mogoče preskočiti časa. Tako kot rastlina potrebuje čas, da zraste, tudi vaša denarnica raste postopoma. Prej kot jo »posadite«, prej bo dosegla svoj polni potencial.",
 ];
 
