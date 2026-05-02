@@ -50,7 +50,7 @@ export default function KjePotrosim() {
 
             <div className="glass-card px-6 py-4">
               <h1 className="font-display text-2xl font-semibold text-lana-ink">Kje potrošim sredstva?</h1>
-              <p className="text-sm text-muted-foreground mt-1">Izberi portal in poišči partnerja v omrežju Ekonomije Obilja.</p>
+              <p className="text-sm text-muted-foreground mt-1">Izberi portal in poišči ponudnika v omrežju Ekonomije Obilja.</p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-3">
