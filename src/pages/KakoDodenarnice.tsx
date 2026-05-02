@@ -6,17 +6,17 @@ import { RotatingBackground } from "@/components/RotatingBackground";
 const APP_LOGIN_URL = "https://app.mejmosefajn.org";
 
 const PORTALS = [
-  { name: "Lana Pridelovalci", desc: "Lokalna hrana & pridelki", url: "https://lanaeco.farm" },
-  { name: "Lana Trgovine", desc: "Splošne trgovine", url: "https://lanaeco.shop" },
-  { name: "Lana Restavracije", desc: "Hrana & pijača", url: "https://lana.restaurant" },
-  { name: "Lana Lepota & Nega", desc: "Kozmetika & wellness", url: "https://lanabeauty.care" },
-  { name: "Lana Moda", desc: "Oblačila & modni dodatki", url: "https://lana.fashion" },
-  { name: "Lana Pohištvo", desc: "Dom & oprema", url: "https://lana.furniture" },
-  { name: "Lana Gradnja", desc: "Materiali & storitve", url: "https://lana.construction" },
-  { name: "Lana Otroci", desc: "Igrače & otroški svet", url: "https://lana.kids" },
-  { name: "Lana Hišni ljubljenčki", desc: "Hrana & oprema za živali", url: "https://lana.pet" },
-  { name: "Lana Počitnice", desc: "Potovanja & nastanitve", url: "https://lana.vacations" },
-  { name: "Lana Tržnica", desc: "Splošna tržnica", url: null },
+  { name: "Lana Pridelovalci", desc: "Kmetije in domača hrana", url: "https://lanaeco.farm" },
+  { name: "Lana Trgovine", desc: "Splošne in specializirane trgovine s pretežno lokalno ponudbo", url: "https://lanaeco.shop" },
+  { name: "Lana Restavracije & Kavarne", desc: "Hrana & Pijača", url: "https://lana.restaurant" },
+  { name: "Lana Lepota & Nega", desc: "Kozmetika, Zdravje, Wellness", url: "https://lanabeauty.care" },
+  { name: "Lana Moda", desc: "Oblačila, Obutev & Modni dodatki", url: "https://lana.fashion" },
+  { name: "Lana Pohištvo", desc: "Dom & Oprema", url: "https://lana.furniture" },
+  { name: "Lana Gradnja", desc: "Materiali & Storitve", url: "https://lana.construction" },
+  { name: "Lana Otroci", desc: "Otrokom prijazni Izdelki & Storitve", url: "https://lana.kids" },
+  { name: "Lana Živali", desc: "Živalim prijazni Izdelki & Storitve", url: "https://lana.pet" },
+  { name: "Lana Počitnice", desc: "Nastanitve & Doživetja", url: "https://lana.vacations" },
+  { name: "Lana Spletna Tržnica", desc: "Vsega po malo za vse", url: null },
 ];
 
 export default function KakoDodenarnice() {
