@@ -81,8 +81,8 @@ export const tr: Translations = {
   portal_zivali_desc:       { sl: "Živalim prijazni Izdelki & Storitve", en: "Animal-friendly Products & Services" },
   portal_pocitnice_name:    { sl: "Lana Počitnice",           en: "Lana Holidays" },
   portal_pocitnice_desc:    { sl: "Nastanitve & Doživetja",   en: "Accommodation & Experiences" },
-  portal_trznica_name:      { sl: "Lana Spletna Tržnica",     en: "Lana Online Market" },
-  portal_trznica_desc:      { sl: "Vsega po malo za vse",     en: "A little of everything for everyone" },
+  portal_trznica_name:      { sl: "Lana Tržnica Rabljenih Izdelkov", en: "Lana Second-hand Market" },
+  portal_trznica_desc:      { sl: "Vsega po malo za vse",           en: "A little of everything for everyone" },
 
   // ─── NovaRealnost ─────────────────────────────────────────────────────────
   nr_kicker: { sl: "Za tiste, ki želite nekaj več", en: "For those who want more" },
