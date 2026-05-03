@@ -61,14 +61,15 @@ export default function ZivljenjeJeLepo() {
               </div>
             </article>
 
-            <footer className="flex flex-col items-center gap-3 text-center pb-8">
-              <p className="text-sm text-foreground/70 italic font-medium">{t("footer", lang)}</p>
-              <div className="flex items-center gap-2 opacity-50">
-                <div className="h-px w-16 bg-foreground/30" />
-                <img src="/lana-favicon.png" alt="" className="w-4 h-4" />
-                <div className="h-px w-16 bg-foreground/30" />
-              </div>
-            </footer>
+            <div className="flex justify-center pb-4">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 rounded-2xl bg-lana-purple text-white px-8 py-4 text-base font-semibold shadow-lg hover:bg-lana-purple/90 transition"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                {t("backToStart", lang)}
+              </Link>
+            </div>
           </div>
         </main>
       </div>
