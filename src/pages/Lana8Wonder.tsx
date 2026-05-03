@@ -1,37 +1,20 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft, LogIn, Star, ExternalLink } from "lucide-react";
-import { LanaLogo } from "@/components/LanaLogo";
+import { ArrowLeft, Star, ExternalLink } from "lucide-react";
 import { RotatingBackground } from "@/components/RotatingBackground";
-
-const APP_LOGIN_URL = "https://app.mejmosefajn.org";
-
-const PARAGRAPHS = [
-  "Lana8Wonder je zasnovana tako, da dolgoročno vsakega posameznika v Novi Realnosti pripelje do točke, kjer premoženje njegove osebne denarnice zraste do ravni, ki mu omogoča življenje z najboljšim od najboljšega.",
-  "Te denarnice imajo posebno strukturo in čeprav na prvi pogled deluje, kot da vsaka zase vsebuje veliko premoženje, je v resnici seštevek vseh izgrajenih Lana8Wonder denarnic vedno enak nič.",
-  "Njihovo delovanje lahko primerjamo z morsko gladino. Ko je morje mirno, je gladina na izhodiščni točki nič. Ko nastanejo valovi, je en val +10 cm, drugi pa −10 cm. Nato gravitacija en val spusti in drugega dvigne. Podobno kot zrak, ki si ga vsi izmenjujemo, tudi te denarnice delujejo kot uravnotežen sistem.",
-  "Vsak posameznik ima tako na voljo dovolj sredstev za stvari, ki ga v življenju veselijo, hkrati pa skupna vrednost ostaja uravnotežena. V tej ekonomiji vrednost ni nekaj, kar bi neskončno raslo ali padalo — preprosto je. Zato ta sistem ne temelji na klasični gospodarski rasti, temveč na ravnovesju.",
-  "Lana8Wonder denarnica potrebuje čas, da zraste. Pridobite jo tako, da v Lana8Wonder zaklenete sredstva v Lanah v protivrednosti 100 €, ki se nato postopoma plemenitijo. Če vam do tega zneska manjkajo sredstva, lahko razliko dokupite, opravite dodatne nakupe v sistemu ali pa preprosto počakate nekaj Splitov, da vrednost sama doseže 100 €. Izbira je vaša.",
-  "Pomembno je tudi, da nihče ne more v Lana8Wonder vložiti več kot ta znesek, prav tako ni mogoče preskočiti časa. Tako kot rastlina potrebuje čas, da zraste, tudi vaša denarnica raste postopoma. Prej kot jo »posadite«, prej bo dosegla svoj polni potencial.",
-];
+import { AppHeader } from "@/components/AppHeader";
+import { useLang } from "@/contexts/LanguageContext";
+import { t } from "@/lib/translations";
 
 export default function Lana8Wonder() {
+  const { lang } = useLang();
+
+  const paragraphs = ["l8w_p1","l8w_p2","l8w_p3","l8w_p4","l8w_p5","l8w_p6"];
+
   return (
     <>
       <RotatingBackground />
 
       <div className="relative min-h-screen flex flex-col">
-        <header className="px-6 sm:px-10 lg:px-16 pt-6 sm:pt-8 flex items-center justify-between">
-          <Link to="/" className="inline-flex items-center gap-3 hover:opacity-80 transition">
-            <LanaLogo />
-          </Link>
-          <a
-            href={APP_LOGIN_URL}
-            className="inline-flex items-center gap-2 rounded-full bg-white/75 backdrop-blur-md border border-white/60 px-4 py-2 text-sm font-medium text-foreground shadow-sm hover:bg-white transition"
-          >
-            <LogIn className="w-4 h-4 text-lana-purple" />
-            Prijava
-          </a>
-        </header>
+        <AppHeader />
 
         <main className="flex-1 px-6 sm:px-10 lg:px-16 py-8 lg:py-14 flex flex-col items-center">
           <div className="w-full max-w-2xl space-y-6 animate-fade-in">
@@ -39,7 +22,7 @@ export default function Lana8Wonder() {
               onClick={() => window.history.back()}
               className="inline-flex items-center gap-2 text-sm text-foreground/70 hover:text-foreground transition"
             >
-              <ArrowLeft className="w-4 h-4" /> Nazaj
+              <ArrowLeft className="w-4 h-4" /> {t("back", lang)}
             </button>
 
             <article className="glass-card p-8 sm:p-10 space-y-6 relative overflow-hidden">
@@ -57,8 +40,8 @@ export default function Lana8Wonder() {
               </header>
 
               <div className="space-y-4 text-foreground/85 leading-relaxed">
-                {PARAGRAPHS.map((p, i) => (
-                  <p key={i}>{p}</p>
+                {paragraphs.map((key) => (
+                  <p key={key}>{t(key, lang)}</p>
                 ))}
               </div>
             </article>
@@ -71,21 +54,21 @@ export default function Lana8Wonder() {
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-lana-purple text-white px-8 py-4 text-base font-semibold shadow-lg hover:bg-lana-purple/90 transition"
               >
                 <ExternalLink className="w-5 h-5" />
-                Obišči lana8wonder.com
+                {t("l8w_visit", lang)}
               </a>
               <button
                 onClick={() => window.history.back()}
                 className="inline-flex items-center justify-center gap-2 rounded-2xl bg-white/80 hover:bg-white border border-border/70 px-8 py-4 text-base font-semibold transition"
               >
                 <ArrowLeft className="w-5 h-5" />
-                Nazaj
+                {t("back", lang)}
               </button>
             </div>
           </div>
         </main>
 
         <footer className="px-6 sm:px-10 lg:px-16 pb-6 text-center">
-          <p className="text-xs text-foreground/60 italic">Lana. Preprosto. Lepo. Tvoje.</p>
+          <p className="text-xs text-foreground/60 italic">{t("footer", lang)}</p>
         </footer>
       </div>
     </>

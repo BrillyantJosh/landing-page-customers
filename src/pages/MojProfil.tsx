@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowLeft, LogIn, Save, Loader2, CheckCircle, AlertCircle, User, ShieldCheck } from "lucide-react";
-import { LanaLogo } from "@/components/LanaLogo";
+import { ArrowLeft, Save, Loader2, CheckCircle, AlertCircle, User, ShieldCheck } from "lucide-react";
 import { RotatingBackground } from "@/components/RotatingBackground";
+import { AppHeader } from "@/components/AppHeader";
+import { useLang } from "@/contexts/LanguageContext";
+import { t } from "@/lib/translations";
 import { createAndSignKind0, type Kind0Content } from "@/lib/nostr-sign";
-
-const APP_LOGIN_URL = "https://app.mejmosefajn.org";
 
 const CURRENCIES = ["EUR", "GBP", "USD"];
 
@@ -133,6 +133,7 @@ interface ProfileState {
 
 export default function MojProfil() {
   const location = useLocation();
+  const { lang } = useLang();
   const state = location.state as ProfileState | null;
 
   const [profile, setProfile] = useState<Kind0Content>({});
@@ -171,7 +172,7 @@ export default function MojProfil() {
           setProfile(data);
         }
       } catch {
-        setFetchError("Profila ni bilo mogoče naložiti.");
+        setFetchError(t("mp_nodata", lang));
       } finally {
         setLoading(false);
       }
@@ -195,12 +196,12 @@ export default function MojProfil() {
       });
       const data = await res.json();
       if (data.success) {
-        setSaveResult({ ok: true, message: "Profil uspešno shranjen!" });
+        setSaveResult({ ok: true, message: t("mp_saved", lang) });
       } else {
-        setSaveResult({ ok: false, message: "Pošiljanje ni uspelo. Poskusi znova." });
+        setSaveResult({ ok: false, message: t("mp_send_error", lang) });
       }
     } catch {
-      setSaveResult({ ok: false, message: "Napaka pri shranjevanju." });
+      setSaveResult({ ok: false, message: t("mp_error", lang) });
     } finally {
       setSaving(false);
     }
@@ -215,9 +216,9 @@ export default function MojProfil() {
         <RotatingBackground />
         <div className="relative min-h-screen flex flex-col items-center justify-center p-8">
           <div className="glass-card p-8 max-w-sm text-center space-y-4">
-            <p className="text-foreground/80">Skeniraj WIF ključ, da dostopaš do svojega profila.</p>
+            <p className="text-foreground/80">{t("mp_no_state", lang)}</p>
             <Link to="/" className="inline-flex items-center gap-2 rounded-2xl bg-lana-purple text-white px-5 py-2.5 font-medium hover:bg-lana-purple/90 transition">
-              <ArrowLeft className="w-4 h-4" /> Nazaj
+              <ArrowLeft className="w-4 h-4" /> {t("back", lang)}
             </Link>
           </div>
         </div>
@@ -230,18 +231,7 @@ export default function MojProfil() {
       <RotatingBackground />
 
       <div className="relative min-h-screen flex flex-col">
-        <header className="px-6 sm:px-10 lg:px-16 pt-6 sm:pt-8 flex items-center justify-between">
-          <Link to="/" className="inline-flex items-center gap-3 hover:opacity-80 transition">
-            <LanaLogo />
-          </Link>
-          <a
-            href={APP_LOGIN_URL}
-            className="inline-flex items-center gap-2 rounded-full bg-white/75 backdrop-blur-md border border-white/60 px-4 py-2 text-sm font-medium text-foreground shadow-sm hover:bg-white transition"
-          >
-            <LogIn className="w-4 h-4 text-lana-purple" />
-            Prijava
-          </a>
-        </header>
+        <AppHeader />
 
         <main className="flex-1 px-6 sm:px-10 lg:px-16 py-8 lg:py-14 flex flex-col items-center">
           <div className="w-full max-w-xl space-y-6 animate-fade-in">
@@ -249,13 +239,13 @@ export default function MojProfil() {
               onClick={() => window.history.back()}
               className="inline-flex items-center gap-2 text-sm text-foreground/70 hover:text-foreground transition"
             >
-              <ArrowLeft className="w-4 h-4" /> Nazaj
+              <ArrowLeft className="w-4 h-4" /> {t("back", lang)}
             </button>
 
             <div className="glass-card p-8 sm:p-10 space-y-6 relative overflow-hidden">
               <User className="absolute top-6 right-6 w-5 h-5 text-lana-purple/50" />
 
-              <h1 className="font-display text-2xl sm:text-3xl font-semibold text-lana-ink">Moj profil</h1>
+              <h1 className="font-display text-2xl sm:text-3xl font-semibold text-lana-ink">{t("mp_title", lang)}</h1>
 
               {loading ? (
                 <div className="flex justify-center py-10">
@@ -265,16 +255,16 @@ export default function MojProfil() {
                 <p className="text-sm text-destructive">{fetchError}</p>
               ) : (
                 <div className="space-y-4">
-                  <Field label="Ime in Priimek" value={profile.name || ""} onChange={(v) => set("name", v)} />
-                  <Field label="Prikazno ime" value={profile.display_name || ""} onChange={(v) => set("display_name", v)} />
-                  <Field label="O meni" value={profile.about || ""} onChange={(v) => set("about", v)} multiline />
-                  <Field label="Slika (URL)" value={profile.picture || ""} onChange={(v) => set("picture", v)} />
-                  <Field label="E-pošta" value={profile.email || ""} onChange={(v) => set("email", v)} />
-                  <Field label="Lokacija (mesto)" value={profile.location || ""} onChange={(v) => set("location", v)} />
+                  <Field label={t("mp_name", lang)} value={profile.name || ""} onChange={(v) => set("name", v)} />
+                  <Field label={t("mp_display", lang)} value={profile.display_name || ""} onChange={(v) => set("display_name", v)} />
+                  <Field label={t("mp_about", lang)} value={profile.about || ""} onChange={(v) => set("about", v)} multiline />
+                  <Field label={t("mp_picture", lang)} value={profile.picture || ""} onChange={(v) => set("picture", v)} />
+                  <Field label={t("mp_email", lang)} value={profile.email || ""} onChange={(v) => set("email", v)} />
+                  <Field label={t("mp_location", lang)} value={profile.location || ""} onChange={(v) => set("location", v)} />
 
                   {/* Country autocomplete */}
                   <div className="relative">
-                    <label className="block text-xs font-semibold text-foreground/70 mb-1.5">Država</label>
+                    <label className="block text-xs font-semibold text-foreground/70 mb-1.5">{t("mp_country", lang)}</label>
                     <input
                       type="text"
                       autoComplete="off"
@@ -290,7 +280,7 @@ export default function MojProfil() {
                       }}
                       onFocus={() => { if (!profile.country) setShowCountryDropdown(true); }}
                       onBlur={() => setTimeout(() => setShowCountryDropdown(false), 150)}
-                      placeholder="Začni tipkati ime ali ISO kodo (npr. SI)"
+                      placeholder={t("mp_country_ph", lang)}
                       className="w-full rounded-2xl border border-border/70 bg-white/70 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-lana-purple/40"
                     />
                     {showCountryDropdown && filteredCountries.length > 0 && (
@@ -315,7 +305,7 @@ export default function MojProfil() {
 
                   {/* Language autocomplete */}
                   <div className="relative">
-                    <label className="block text-xs font-semibold text-foreground/70 mb-1.5">Jezik</label>
+                    <label className="block text-xs font-semibold text-foreground/70 mb-1.5">{t("mp_language", lang)}</label>
                     <input
                       type="text"
                       autoComplete="off"
@@ -331,7 +321,7 @@ export default function MojProfil() {
                       }}
                       onFocus={() => { if (!profile.language) setShowLanguageDropdown(true); }}
                       onBlur={() => setTimeout(() => setShowLanguageDropdown(false), 150)}
-                      placeholder="Začni tipkati jezik ali ISO kodo (npr. sl)"
+                      placeholder={t("mp_language_ph", lang)}
                       className="w-full rounded-2xl border border-border/70 bg-white/70 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-lana-purple/40"
                     />
                     {showLanguageDropdown && filteredLanguages.length > 0 && (
@@ -356,7 +346,7 @@ export default function MojProfil() {
 
                   {/* Currency */}
                   <div>
-                    <label className="block text-xs font-semibold text-foreground/70 mb-1.5">Valuta</label>
+                    <label className="block text-xs font-semibold text-foreground/70 mb-1.5">{t("mp_currency", lang)}</label>
                     <div className="flex flex-wrap gap-2">
                       {CURRENCIES.map((c) => (
                         <button
@@ -379,16 +369,16 @@ export default function MojProfil() {
                   <div className="rounded-2xl bg-amber-50/70 border border-amber-200/60 p-4 space-y-3">
                     <div className="flex items-center gap-2">
                       <ShieldCheck className="w-4 h-4 text-amber-700" />
-                      <label className="block text-sm font-semibold text-amber-900">Izjava o samoodgovornosti</label>
+                      <label className="block text-sm font-semibold text-amber-900">{t("mp_declaration", lang)}</label>
                     </div>
                     <p className="text-xs text-amber-800/90 leading-relaxed">
-                      Napišite kratko osebno izjavo, da brezpogojno sprejemate samo-odgovornost. Kateri koli jezik je v redu.
+                      {t("mp_declaration_desc", lang)}
                     </p>
                     <textarea
                       value={profile.statement_of_responsibility || ""}
                       onChange={(e) => set("statement_of_responsibility", e.target.value)}
                       rows={4}
-                      placeholder="Npr.: Jaz, [Ime Priimek], brezpogojno sprejemam odgovornost za vse kar naredim ali pa bi moral narediti pa nisem."
+                      placeholder={t("mp_declaration_ph", lang)}
                       className="w-full rounded-2xl border border-amber-200/70 bg-white/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400/40 resize-none"
                     />
                   </div>
@@ -409,7 +399,7 @@ export default function MojProfil() {
                     className="w-full flex items-center justify-center gap-2 rounded-2xl bg-lana-purple text-white px-5 py-3 font-semibold hover:bg-lana-purple/90 transition disabled:opacity-60"
                   >
                     {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                    {saving ? "Shranjujem…" : "Shrani profil"}
+                    {saving ? t("mp_saving", lang) : t("mp_save", lang)}
                   </button>
                 </div>
               )}
@@ -418,7 +408,7 @@ export default function MojProfil() {
         </main>
 
         <footer className="px-6 sm:px-10 lg:px-16 pb-6 text-center">
-          <p className="text-xs text-foreground/60 italic">Lana. Preprosto. Lepo. Tvoje.</p>
+          <p className="text-xs text-foreground/60 italic">{t("footer", lang)}</p>
         </footer>
       </div>
     </>
