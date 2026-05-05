@@ -258,8 +258,8 @@ const profileName = profile?.display_name || profile?.name;
                 </div>
 
                 {/* Action buttons */}
-                <div className={`grid gap-3 ${state.privateKeyHex ? "grid-cols-3" : "grid-cols-2"}`}>
-                  {state.privateKeyHex && (
+                <div className={`grid gap-3 ${state.privateKeyHex && nostrHexId === hexId ? "grid-cols-3" : "grid-cols-2"}`}>
+                  {state.privateKeyHex && nostrHexId === hexId && (
                     <ActionButton
                       icon={<User className="w-5 h-5 text-lana-purple" />}
                       label={t("cr_profile", lang)}
