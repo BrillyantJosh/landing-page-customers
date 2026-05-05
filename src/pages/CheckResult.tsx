@@ -25,6 +25,7 @@ interface RegistrationResult {
   registered: boolean;
   frozen?: boolean;
   wallet_type?: string;
+  nostr_hex_id?: string;
 }
 
 interface Kind0Profile {
@@ -54,26 +55,17 @@ export default function CheckResult() {
 
   const [accountFrozen, setAccountFrozen] = useState<boolean | null>(null);
 
-  // Sequential init: profile first (to get currency), then registration + balance
+  // nostr_hex_id returned by check-wallet — may differ from scanned wallet's hexId
+  // (sub-wallets share the main wallet's Nostr identity)
+  const [nostrHexId, setNostrHexId] = useState<string>(hexId ?? "");
+
+  // Sequential init: registration first (to get nostr_hex_id), then profile + balance
   useEffect(() => {
     if (!state || !hexId) return;
 
     const init = async () => {
-      // 1. Fetch KIND 0 profile — KIND 0 currency always wins on initial load
-      let activeCurrency = "EUR";
-      try {
-        const profileRes = await fetch(`/api/profile/${hexId}`);
-        if (profileRes.ok) {
-          const profileData: Kind0Profile = await profileRes.json();
-          setProfile(profileData);
-          if (profileData.currency) {
-            activeCurrency = profileData.currency;
-            setCurrency(profileData.currency);
-          }
-        }
-      } catch {}
-
-      // 2. Check wallet registration
+      // 1. Check wallet registration — response carries nostr_hex_id of the main wallet
+      let profileHexId = hexId;
       try {
         const res = await fetch("/api/check-wallet", {
           method: "POST",
@@ -82,9 +74,31 @@ export default function CheckResult() {
         });
         const data = (await res.json()) as RegistrationResult;
         setRegistration(data);
+
+        // Use the main wallet's Nostr hex ID for all profile/relay lookups
+        if (data.nostr_hex_id) {
+          profileHexId = data.nostr_hex_id;
+          setNostrHexId(data.nostr_hex_id);
+        }
+
         if (data.registered) {
-          fetchBalance(activeCurrency); // correct currency guaranteed
-          fetchAccountStatus();
+          fetchAccountStatus(profileHexId);
+
+          // 2. Fetch KIND 0 profile with the correct hex — currency from profile wins
+          let activeCurrency = "EUR";
+          try {
+            const profileRes = await fetch(`/api/profile/${profileHexId}`);
+            if (profileRes.ok) {
+              const profileData: Kind0Profile = await profileRes.json();
+              setProfile(profileData);
+              if (profileData.currency) {
+                activeCurrency = profileData.currency;
+                setCurrency(profileData.currency);
+              }
+            }
+          } catch {}
+
+          fetchBalance(activeCurrency);
         }
       } catch (err) {
         setRegError(err instanceof Error ? err.message : lang === "en" ? "Connection error" : "Napaka pri povezavi");
@@ -113,10 +127,9 @@ export default function CheckResult() {
     }
   };
 
-  const fetchAccountStatus = async () => {
-    if (!hexId) return;
+  const fetchAccountStatus = async (profileHexId: string) => {
     try {
-      const res = await fetch(`/api/wallets/${hexId}`);
+      const res = await fetch(`/api/wallets/${profileHexId}`);
       if (res.ok) {
         const data = await res.json();
         setAccountFrozen(data.accountStatus === "frozen");
@@ -250,7 +263,7 @@ const profileName = profile?.display_name || profile?.name;
                     icon={<User className="w-5 h-5 text-lana-purple" />}
                     label={t("cr_profile", lang)}
                     desc={t("cr_profile_sub", lang)}
-                    onClick={() => navigate("/moj-profil", { state: { hexId, privateKeyHex: state.privateKeyHex } })}
+                    onClick={() => navigate("/moj-profil", { state: { hexId: nostrHexId, privateKeyHex: state.privateKeyHex } })}
                   />
                   <ActionButton
                     icon={<ShoppingBag className="w-5 h-5 text-lana-purple" />}
