@@ -258,13 +258,15 @@ const profileName = profile?.display_name || profile?.name;
                 </div>
 
                 {/* Action buttons */}
-                <div className="grid grid-cols-3 gap-3">
-                  <ActionButton
-                    icon={<User className="w-5 h-5 text-lana-purple" />}
-                    label={t("cr_profile", lang)}
-                    desc={t("cr_profile_sub", lang)}
-                    onClick={() => navigate("/moj-profil", { state: { hexId: nostrHexId, privateKeyHex: state.privateKeyHex } })}
-                  />
+                <div className={`grid gap-3 ${state.privateKeyHex ? "grid-cols-3" : "grid-cols-2"}`}>
+                  {state.privateKeyHex && (
+                    <ActionButton
+                      icon={<User className="w-5 h-5 text-lana-purple" />}
+                      label={t("cr_profile", lang)}
+                      desc={t("cr_profile_sub", lang)}
+                      onClick={() => navigate("/moj-profil", { state: { hexId: nostrHexId, privateKeyHex: state.privateKeyHex } })}
+                    />
+                  )}
                   <ActionButton
                     icon={<ShoppingBag className="w-5 h-5 text-lana-purple" />}
                     label={t("cr_spend", lang)}
