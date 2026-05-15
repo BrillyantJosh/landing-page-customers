@@ -17,6 +17,7 @@ const PORTALS = [
   { nameKey: "portal_zivali_name",       descKey: "portal_zivali_desc",       url: "https://lana.pet" },
   { nameKey: "portal_pocitnice_name",    descKey: "portal_pocitnice_desc",    url: "https://lana.vacations" },
   { nameKey: "portal_trznica_name",      descKey: "portal_trznica_desc",      url: null },
+  { nameKey: "portal_dogodki_name",      descKey: "portal_dogodki_desc",      url: "https://lana.events" },
 ];
 
 const body = {
