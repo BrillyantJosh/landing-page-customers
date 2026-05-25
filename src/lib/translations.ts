@@ -5,7 +5,7 @@ type Translations = Record<string, T>;
 
 export const tr: Translations = {
   // ─── Common ───────────────────────────────────────────────────────────────
-  login:       { sl: "Prijava",            en: "Login" },
+  login:       { sl: "Portal",             en: "Portal" },
   back:        { sl: "Nazaj",              en: "Back" },
   backToStart: { sl: "Nazaj na začetek",   en: "Back to start" },
   footer:      { sl: "Lana. Preprosto. Lepo. Tvoje.", en: "Lana. Simple. Beautiful. Yours." },
