@@ -63,11 +63,30 @@ const onlineLinkOf = (e: NostrEvent) => absolutize(tag(e, "online"));
 const linkOf = (e: NostrEvent) =>
   onlineLinkOf(e) || absolutize(tag(e, "website")) || "https://lanapays.us/";
 
+// Real cover only if it's a publicly reachable absolute URL. Relative
+// /api/storage/... paths live inside the LanaPays backend and aren't
+// publicly served, so we fall back to an on-brand image instead.
 const coverOf = (e: NostrEvent): string => {
   const raw =
     tag(e, "cover") || tag(e, "image") || tag(e, "thumbnail") || tag(e, "picture") || "";
-  if (!raw || raw.startsWith("/api/storage/")) return "";
-  return absolutize(raw);
+  if (!raw || !/^https?:\/\//i.test(raw)) return "";
+  return raw;
+};
+
+// On-brand fallback covers from the site's own background photos.
+const FALLBACK_IMAGES = [
+  "/bg/lana-meadow.png",
+  "/bg/lana-cottage.png",
+  "/bg/lana-council.png",
+  "/bg/lana-sky.png",
+  "/bg/lana-meditation.png",
+  "/bg/lana-mountain.png",
+  "/bg/mandala-sunset.png",
+];
+const fallbackFor = (seed: string): string => {
+  let sum = 0;
+  for (let i = 0; i < seed.length; i++) sum += seed.charCodeAt(i);
+  return FALLBACK_IMAGES[sum % FALLBACK_IMAGES.length];
 };
 
 const summaryOf = (e: NostrEvent): string =>
@@ -151,7 +170,8 @@ export function UpcomingEvents() {
               end && end > start ? `${hour(start)} – ${hour(end)}` : hour(start);
             const title = tag(event, "title") || "Lana";
             const online = onlineLinkOf(event);
-            const cover = coverOf(event);
+            const fallback = fallbackFor(tag(event, "d") || event.id || title);
+            const cover = coverOf(event) || fallback;
             const summary = summaryOf(event);
             const long = summary.length > 200;
             const isOpen = expanded[event.id];
@@ -163,21 +183,16 @@ export function UpcomingEvents() {
                 className="glass-card overflow-hidden flex flex-col hover:scale-[1.01] transition-transform"
               >
                 <div className="relative h-36 bg-lana-lavender">
-                  {cover ? (
-                    <img
-                      src={cover}
-                      alt={title}
-                      loading="lazy"
-                      className="w-full h-full object-cover"
-                      onError={(ev) => {
-                        (ev.currentTarget as HTMLImageElement).style.display = "none";
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <img src="/lana-favicon.png" alt="" className="w-10 h-10 opacity-40" />
-                    </div>
-                  )}
+                  <img
+                    src={cover}
+                    alt={title}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                    onError={(ev) => {
+                      const img = ev.currentTarget as HTMLImageElement;
+                      if (img.src !== window.location.origin + fallback) img.src = fallback;
+                    }}
+                  />
                   <time className="absolute bottom-2 left-2 bg-white/90 backdrop-blur rounded-xl px-2.5 py-1 text-center shadow">
                     <span className="block text-lg font-bold leading-none text-lana-ink">
                       {start.getDate()}
