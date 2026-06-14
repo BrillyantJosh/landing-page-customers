@@ -1,6 +1,7 @@
 import { Wallet, ExternalLink, ArrowLeft } from "lucide-react";
 import { RotatingBackground } from "@/components/RotatingBackground";
 import { AppHeader } from "@/components/AppHeader";
+import { UpcomingEvents } from "@/components/UpcomingEvents";
 import { useLang } from "@/contexts/LanguageContext";
 import { t } from "@/lib/translations";
 
@@ -75,6 +76,10 @@ export default function KjePotrosim() {
                   </div>
                 )
               )}
+            </div>
+
+            <div className="pt-6 border-t border-foreground/10">
+              <UpcomingEvents />
             </div>
 
             <div className="flex justify-center pb-4">

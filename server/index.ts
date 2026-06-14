@@ -15,7 +15,7 @@ import express from "express";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
-import { fetchKind0Profile, broadcastEvent } from "./lib/nostr.js";
+import { fetchKind0Profile, broadcastEvent, fetchCalendarEvents, type NostrEvent } from "./lib/nostr.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -82,6 +82,28 @@ app.get("/api/profile/:hexId", async (req, res) => {
   } catch (err) {
     console.error("[profile] fetch failed:", err);
     res.status(502).json({ error: "Relay unavailable" });
+  }
+});
+
+// ─── Calendar events (KIND 36677) — cached relay fetch ───
+let eventsCache: { at: number; events: NostrEvent[] } | null = null;
+const EVENTS_TTL = 5 * 60 * 1000; // 5 min
+
+app.get("/api/events", async (_req, res) => {
+  try {
+    if (eventsCache && Date.now() - eventsCache.at < EVENTS_TTL) {
+      return res.json({ events: eventsCache.events, cached: true });
+    }
+    const events = await fetchCalendarEvents();
+    // Only refresh the cache when relays actually returned something,
+    // so a transient relay hiccup doesn't blank the section.
+    if (events.length > 0 || !eventsCache) {
+      eventsCache = { at: Date.now(), events };
+    }
+    res.json({ events: eventsCache!.events, cached: false });
+  } catch (err) {
+    console.error("[events] fetch failed:", err);
+    res.status(502).json({ error: "Relay unavailable", events: [] });
   }
 });
 

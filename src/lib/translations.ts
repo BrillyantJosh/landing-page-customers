@@ -60,6 +60,17 @@ export const tr: Translations = {
   kp_title:    { sl: "Kje potrošim sredstva?",  en: "Where can I spend?" },
   kp_sub:      { sl: "Izberi portal in poišči ponudnika v omrežju Ekonomije Obilja.", en: "Choose a portal and find a provider in the Economy of Abundance network." },
 
+  // ─── Upcoming events (KIND 36677) ─────────────────────────────────────────
+  ev_title:    { sl: "Aktualni dogodki",        en: "Current events" },
+  ev_sub:      { sl: "Pridruži se prihajajočim dogodkom skupnosti Lana.", en: "Join the upcoming Lana community events." },
+  ev_loading:  { sl: "Nalagam dogodke…",        en: "Loading events…" },
+  ev_empty:    { sl: "Trenutno ni objavljenih prihajajočih dogodkov.", en: "There are no upcoming events at the moment." },
+  ev_online:   { sl: "Spletno",                  en: "Online" },
+  ev_location: { sl: "Lokacija",                 en: "Location" },
+  ev_join:     { sl: "Priključi se na dogodek",  en: "Join the event" },
+  ev_more:     { sl: "več",                      en: "more" },
+  ev_less:     { sl: "manj",                     en: "less" },
+
   // ─── Portal names & descs (shared) ────────────────────────────────────────
   portal_pridelovalci_name: { sl: "Lana Pridelovalci",       en: "Lana Growers" },
   portal_pridelovalci_desc: { sl: "Kmetije in domača hrana",  en: "Farms and home-grown food" },
