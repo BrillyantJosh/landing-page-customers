@@ -145,6 +145,8 @@ export const tr: Translations = {
   cr_wonder:        { sl: "Lana8Wonder",             en: "Lana8Wonder" },
   cr_wonder_sub:    { sl: "Vstopnica za Obilje",     en: "Ticket to Abundance" },
   cr_scan_again:    { sl: "Skeniraj znova",          en: "Scan again" },
+  cr_backup:        { sl: "Ustvari varnostno kopijo", en: "Create backup" },
+  cr_backup_busy:   { sl: "Pripravljam…",            en: "Preparing…" },
 
   // ─── MojProfil ────────────────────────────────────────────────────────────
   mp_title:          { sl: "Moj profil",             en: "My profile" },

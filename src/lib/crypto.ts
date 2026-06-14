@@ -149,11 +149,13 @@ export interface LanaIds {
   nostrHexId: string;
   nostrNpubId: string;
   privateKeyHex: string;
+  wif: string;
 }
 
 export async function convertWifToIds(wif: string): Promise<LanaIds> {
   try {
-    const { privateKeyHex, isCompressed } = await wifToPrivateKey(wif);
+    const normalizedWif = normalizeWif(wif);
+    const { privateKeyHex, isCompressed } = await wifToPrivateKey(normalizedWif);
 
     const uncompressedPubKey = generatePublicKey(privateKeyHex);
     const compressedPubKey = generateCompressedPublicKey(privateKeyHex);
@@ -172,6 +174,7 @@ export async function convertWifToIds(wif: string): Promise<LanaIds> {
       nostrHexId,
       nostrNpubId,
       privateKeyHex,
+      wif: normalizedWif,
     };
   } catch (error) {
     throw new Error(`Conversion failed: ${error instanceof Error ? error.message : "Unknown error"}`);

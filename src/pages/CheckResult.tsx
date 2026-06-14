@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft, CheckCircle, AlertCircle, Loader2, Snowflake, Sparkles,
-  Wallet, User, ShoppingBag, Star,
+  Wallet, User, ShoppingBag, Star, ShieldCheck,
 } from "lucide-react";
 import { RotatingBackground } from "@/components/RotatingBackground";
 import { AppHeader } from "@/components/AppHeader";
 import { useLang } from "@/contexts/LanguageContext";
 import { t } from "@/lib/translations";
+import { generateBackupPdf } from "@/lib/backup-pdf";
 import type { LanaIds } from "@/lib/crypto";
 
 interface BalanceData {
@@ -54,6 +55,8 @@ export default function CheckResult() {
   const [balLoading, setBalLoading] = useState(false);
 
   const [accountFrozen, setAccountFrozen] = useState<boolean | null>(null);
+
+  const [backupBusy, setBackupBusy] = useState(false);
 
   // nostr_hex_id returned by check-wallet — may differ from scanned wallet's hexId
   // (sub-wallets share the main wallet's Nostr identity)
@@ -140,6 +143,23 @@ export default function CheckResult() {
   };
 
 const profileName = profile?.display_name || profile?.name;
+
+  const handleBackup = async () => {
+    if (!state?.wif || backupBusy) return;
+    setBackupBusy(true);
+    try {
+      await generateBackupPdf({
+        walletId: state.walletId,
+        wif: state.wif,
+        lang,
+        ownerName: profileName,
+      });
+    } catch (err) {
+      console.error("Backup PDF failed:", err);
+    } finally {
+      setBackupBusy(false);
+    }
+  };
 
   if (!state) {
     return (
@@ -281,7 +301,20 @@ const profileName = profile?.display_name || profile?.name;
                   />
                 </div>
 
-                <div className="flex justify-center">
+                <div className="flex flex-wrap justify-center gap-3">
+                  {state.wif && (
+                    <button
+                      type="button"
+                      onClick={handleBackup}
+                      disabled={backupBusy}
+                      className="inline-flex items-center gap-2 rounded-2xl bg-lana-purple text-white px-5 py-2.5 text-sm font-semibold shadow-md hover:bg-lana-purple/90 transition disabled:opacity-60"
+                    >
+                      {backupBusy
+                        ? <Loader2 className="w-4 h-4 animate-spin" />
+                        : <ShieldCheck className="w-4 h-4" />}
+                      {backupBusy ? t("cr_backup_busy", lang) : t("cr_backup", lang)}
+                    </button>
+                  )}
                   <Link
                     to="/"
                     className="inline-flex items-center gap-2 rounded-2xl bg-white/80 hover:bg-white border border-border/70 px-5 py-2.5 text-sm font-medium transition"
