@@ -36,9 +36,19 @@ const TXT = {
   },
 };
 
-async function loadLogo(): Promise<string | null> {
+function bufferToBase64(buf: ArrayBuffer): string {
+  const bytes = new Uint8Array(buf);
+  let binary = "";
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
+
+async function fetchDataUrl(url: string): Promise<string | null> {
   try {
-    const res = await fetch("/lana-favicon.png");
+    const res = await fetch(url);
     if (!res.ok) return null;
     const blob = await res.blob();
     return await new Promise((resolve) => {
@@ -52,6 +62,31 @@ async function loadLogo(): Promise<string | null> {
   }
 }
 
+async function fetchBase64(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return bufferToBase64(await res.arrayBuffer());
+  } catch {
+    return null;
+  }
+}
+
+// Registers a Unicode font (DejaVu Sans) that supports Slovenian č/š/ž.
+// Returns the family name to use, or "helvetica" if the fonts couldn't load.
+async function registerUnicodeFont(doc: jsPDF): Promise<string> {
+  const [reg, bold] = await Promise.all([
+    fetchBase64("/fonts/DejaVuSans.ttf"),
+    fetchBase64("/fonts/DejaVuSans-Bold.ttf"),
+  ]);
+  if (!reg || !bold) return "helvetica";
+  doc.addFileToVFS("DejaVuSans.ttf", reg);
+  doc.addFont("DejaVuSans.ttf", "DejaVuSans", "normal");
+  doc.addFileToVFS("DejaVuSans-Bold.ttf", bold);
+  doc.addFont("DejaVuSans-Bold.ttf", "DejaVuSans", "bold");
+  return "DejaVuSans";
+}
+
 interface BackupData {
   walletId: string;
   wif: string;
@@ -59,17 +94,21 @@ interface BackupData {
   ownerName?: string;
 }
 
-export async function generateBackupPdf({ walletId, wif, lang, ownerName }: BackupData): Promise<void> {
+export async function generateBackupPdf(
+  { walletId, wif, lang, ownerName }: BackupData,
+  opts?: { output?: "datauri" },
+): Promise<string | void> {
   const tx = TXT[lang];
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const W = 210;
   const margin = 18;
   const contentW = W - margin * 2;
 
-  // QR + logo (in parallel)
-  const [qrDataUrl, logoDataUrl] = await Promise.all([
+  // Load assets in parallel
+  const [qrDataUrl, logoDataUrl, FONT] = await Promise.all([
     QRCode.toDataURL(wif, { margin: 1, width: 600, errorCorrectionLevel: "H" }),
-    loadLogo(),
+    fetchDataUrl("/lana-favicon.png"),
+    registerUnicodeFont(doc),
   ]);
 
   let y = margin;
@@ -81,18 +120,18 @@ export async function generateBackupPdf({ walletId, wif, lang, ownerName }: Back
     doc.addImage(logoDataUrl, "PNG", margin + 6, y + 6, 18, 18);
   }
   doc.setTextColor(...INK);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
+  doc.setFont(FONT, "bold");
+  doc.setFontSize(19);
   doc.text(tx.title, margin + 30, y + 14);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
+  doc.setFont(FONT, "normal");
+  doc.setFontSize(9.5);
   doc.setTextColor(...MUTED);
   doc.text(tx.subtitle, margin + 30, y + 22);
   y += 30 + 8;
 
   // ── Owner (optional) ──
   if (ownerName) {
-    doc.setFont("helvetica", "bold");
+    doc.setFont(FONT, "bold");
     doc.setFontSize(12);
     doc.setTextColor(...INK);
     doc.text(ownerName, margin, y);
@@ -100,36 +139,37 @@ export async function generateBackupPdf({ walletId, wif, lang, ownerName }: Back
   }
 
   // ── Warning box ──
-  doc.setFont("helvetica", "normal");
+  doc.setFont(FONT, "normal");
   doc.setFontSize(9.5);
-  const warnLines = doc.splitTextToSize(tx.warn, contentW - 12);
-  const warnBoxH = 12 + warnLines.length * 4.6 + 4;
+  const warnLines = doc.splitTextToSize(tx.warn, contentW - 12) as string[];
+  const warnBoxH = 13 + warnLines.length * 4.8;
   doc.setFillColor(...AMBER_BG);
   doc.setDrawColor(...AMBER_BORDER);
   doc.setLineWidth(0.4);
   doc.roundedRect(margin, y, contentW, warnBoxH, 3, 3, "FD");
-  doc.setFont("helvetica", "bold");
+  doc.setFont(FONT, "bold");
   doc.setFontSize(10.5);
   doc.setTextColor(...AMBER_TEXT);
   doc.text(tx.warnTitle, margin + 6, y + 8);
-  doc.setFont("helvetica", "normal");
+  doc.setFont(FONT, "normal");
   doc.setFontSize(9.5);
   doc.text(warnLines, margin + 6, y + 15);
   y += warnBoxH + 10;
 
-  // ── Wallet ID field ──
+  // ── Key/value fields ──
   const drawField = (label: string, value: string): void => {
-    doc.setFont("helvetica", "bold");
+    doc.setFont(FONT, "bold");
     doc.setFontSize(9);
     doc.setTextColor(...BLUE);
     doc.text(label.toUpperCase(), margin, y);
     y += 5;
-    const valLines = doc.splitTextToSize(value, contentW - 10);
+    const valLines = doc.splitTextToSize(value, contentW - 10) as string[];
     const boxH = 6 + valLines.length * 5.2;
     doc.setFillColor(248, 250, 253);
     doc.setDrawColor(...LAVENDER);
     doc.setLineWidth(0.5);
     doc.roundedRect(margin, y, contentW, boxH, 2.5, 2.5, "FD");
+    // values are ASCII (base58) — courier keeps them crisp & monospaced
     doc.setFont("courier", "normal");
     doc.setFontSize(11);
     doc.setTextColor(...INK);
@@ -141,15 +181,14 @@ export async function generateBackupPdf({ walletId, wif, lang, ownerName }: Back
   drawField(tx.keyLabel, wif);
 
   // ── QR code ──
-  const qrSize = 58;
+  const qrSize = 56;
   const qrX = (W - qrSize) / 2;
   doc.addImage(qrDataUrl, "PNG", qrX, y, qrSize, qrSize);
   y += qrSize + 6;
-  doc.setFont("helvetica", "normal");
+  doc.setFont(FONT, "normal");
   doc.setFontSize(9.5);
   doc.setTextColor(...MUTED);
   doc.text(tx.qrCaption, W / 2, y, { align: "center" });
-  y += 10;
 
   // ── Footer ──
   const dateStr = new Date().toLocaleString(lang === "sl" ? "sl-SI" : "en-GB");
@@ -157,11 +196,15 @@ export async function generateBackupPdf({ walletId, wif, lang, ownerName }: Back
   doc.setDrawColor(...LAVENDER);
   doc.setLineWidth(0.4);
   doc.line(margin, footerY - 6, W - margin, footerY - 6);
-  doc.setFont("helvetica", "italic");
+  doc.setFont(FONT, "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(...MUTED);
   doc.text(tx.footer, margin, footerY);
   doc.text(`${tx.created}: ${dateStr}`, W - margin, footerY, { align: "right" });
+
+  if (opts?.output === "datauri") {
+    return doc.output("datauristring");
+  }
 
   const shortId = walletId.slice(0, 10);
   doc.save(`lana-backup-${shortId}.pdf`);
