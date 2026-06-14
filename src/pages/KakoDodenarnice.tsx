@@ -5,19 +5,20 @@ import { AppHeader } from "@/components/AppHeader";
 import { useLang } from "@/contexts/LanguageContext";
 import { t } from "@/lib/translations";
 
+// url set = active (offers available, tinted green); url null = "Kmalu / Soon"
 const PORTALS = [
   { nameKey: "portal_pridelovalci_name", descKey: "portal_pridelovalci_desc", url: "https://lanaeco.farm" },
   { nameKey: "portal_trgovine_name",     descKey: "portal_trgovine_desc",     url: "https://lanaeco.shop" },
   { nameKey: "portal_restavracije_name", descKey: "portal_restavracije_desc", url: "https://lana.restaurant" },
   { nameKey: "portal_lepota_name",       descKey: "portal_lepota_desc",       url: "https://lanabeauty.care" },
-  { nameKey: "portal_moda_name",         descKey: "portal_moda_desc",         url: "https://lana.fashion" },
   { nameKey: "portal_pohistvo_name",     descKey: "portal_pohistvo_desc",     url: "https://lana.furniture" },
-  { nameKey: "portal_gradnja_name",      descKey: "portal_gradnja_desc",      url: "https://lana.construction" },
-  { nameKey: "portal_otroci_name",       descKey: "portal_otroci_desc",       url: "https://lana.kids" },
-  { nameKey: "portal_zivali_name",       descKey: "portal_zivali_desc",       url: "https://lana.pet" },
-  { nameKey: "portal_pocitnice_name",    descKey: "portal_pocitnice_desc",    url: "https://lana.vacations" },
-  { nameKey: "portal_trznica_name",      descKey: "portal_trznica_desc",      url: "https://lanamarket.place" },
-  { nameKey: "portal_dogodki_name",      descKey: "portal_dogodki_desc",      url: "https://lana.events" },
+  { nameKey: "portal_moda_name",         descKey: "portal_moda_desc",         url: null },
+  { nameKey: "portal_gradnja_name",      descKey: "portal_gradnja_desc",      url: null },
+  { nameKey: "portal_otroci_name",       descKey: "portal_otroci_desc",       url: null },
+  { nameKey: "portal_zivali_name",       descKey: "portal_zivali_desc",       url: null },
+  { nameKey: "portal_pocitnice_name",    descKey: "portal_pocitnice_desc",    url: null },
+  { nameKey: "portal_trznica_name",      descKey: "portal_trznica_desc",      url: null },
+  { nameKey: "portal_dogodki_name",      descKey: "portal_dogodki_desc",      url: null },
 ];
 
 const body = {
@@ -85,7 +86,7 @@ export default function KakoDodenarnice() {
                     href={portal.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="glass-card p-5 flex items-center gap-4 hover:bg-white/85 hover:scale-[1.01] transition-transform group"
+                    className="glass-card p-5 flex items-center gap-4 bg-emerald-50/70 border-emerald-200/60 hover:bg-emerald-50/90 hover:scale-[1.01] transition-transform group"
                   >
                     <div className="w-10 h-10 rounded-2xl bg-lana-lavender flex items-center justify-center shrink-0">
                       <Wallet className="w-5 h-5 text-lana-purple" />
