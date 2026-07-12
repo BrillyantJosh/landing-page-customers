@@ -8,6 +8,7 @@ import MojProfil from "./pages/MojProfil";
 import Lana8Wonder from "./pages/Lana8Wonder";
 import KjePotrosim from "./pages/KjePotrosim";
 import ZivljenjeJeLepo from "./pages/ZivljenjeJeLepo";
+import Nakupi from "./pages/Nakupi";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
       <Route path="/moj-profil" element={<MojProfil />} />
       <Route path="/lana8wonder" element={<Lana8Wonder />} />
       <Route path="/kje-potrosim" element={<KjePotrosim />} />
+      <Route path="/nakupi/:hexId" element={<Nakupi />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

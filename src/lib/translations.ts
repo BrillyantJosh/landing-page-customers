@@ -159,6 +159,16 @@ export const tr: Translations = {
   cr_backup:        { sl: "Ustvari varnostno kopijo", en: "Create backup" },
   cr_backup_busy:   { sl: "Pripravljam…",            en: "Preparing…" },
 
+  // ─── Purchase history (nakupi) ────────────────────────────────────────────
+  ph_title:         { sl: "Moji nakupi",             en: "My purchases" },
+  ph_empty:         { sl: "Ni najdenih nakupov.",    en: "No purchases found yet." },
+  ph_receipt:       { sl: "Račun",                   en: "Receipt" },
+  ph_see_all:       { sl: "Prikaži vse",             en: "Show all" },
+  ph_loading:       { sl: "Nalagam nakupe…",         en: "Loading purchases…" },
+  ph_total:         { sl: "Skupaj porabljeno",       en: "Total spent" },
+  ph_prev:          { sl: "Prejšnja",                en: "Previous" },
+  ph_next:          { sl: "Naslednja",               en: "Next" },
+
   // ─── MojProfil ────────────────────────────────────────────────────────────
   mp_title:          { sl: "Moj profil",             en: "My profile" },
   mp_name:           { sl: "Ime in Priimek",         en: "Full name" },

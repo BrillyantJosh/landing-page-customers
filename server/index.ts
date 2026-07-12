@@ -122,6 +122,26 @@ app.post("/api/broadcast-event", async (req, res) => {
   }
 });
 
+// ─── Proxy: buyer purchase history (KIND 30933 from relays) ──
+// lana-pays-check does all the relay work; we just forward. Slower than the
+// other proxies (upstream queries relays), so give it a generous timeout.
+app.get("/api/purchases/:hexId", async (req, res) => {
+  const { hexId } = req.params;
+  if (!hexId || hexId.length !== 64 || !/^[0-9a-f]+$/.test(hexId)) {
+    return res.status(400).json({ error: "Invalid hex ID" });
+  }
+  try {
+    const upstream = await fetch(`${UPSTREAM}/api/purchases/${encodeURIComponent(hexId)}`, {
+      signal: AbortSignal.timeout(30000),
+    });
+    const data = await upstream.json();
+    res.status(upstream.status).json(data);
+  } catch (err) {
+    console.error("[proxy] purchases failed:", err);
+    res.status(502).json({ error: "Upstream unavailable" });
+  }
+});
+
 // ─── Proxy: account/wallet list (for frozen status) ──────
 app.get("/api/wallets/:hexId", async (req, res) => {
   const { hexId } = req.params;

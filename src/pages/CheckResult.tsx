@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { RotatingBackground } from "@/components/RotatingBackground";
 import { AppHeader } from "@/components/AppHeader";
+import { PurchaseHistory } from "@/components/PurchaseHistory";
 import { useLang } from "@/contexts/LanguageContext";
 import { t } from "@/lib/translations";
 import { generateBackupPdf } from "@/lib/backup-pdf";
@@ -322,6 +323,11 @@ const profileName = profile?.display_name || profile?.name;
                     <ArrowLeft className="w-4 h-4" /> {t("cr_scan_again", lang)}
                   </Link>
                 </div>
+
+                {/* Buyer purchase history (last 10) — keyed by the account's
+                    Nostr identity, not the scanned wallet id. "See all" opens
+                    the paginated /nakupi/:hexId page. */}
+                <PurchaseHistory hexId={nostrHexId} lang={lang} />
               </>
             ) : (
               <div className="glass-card p-8 text-center space-y-4">
