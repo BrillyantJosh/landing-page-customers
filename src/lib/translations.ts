@@ -168,6 +168,9 @@ export const tr: Translations = {
   ph_total:         { sl: "Skupaj porabljeno",       en: "Total spent" },
   ph_prev:          { sl: "Prejšnja",                en: "Previous" },
   ph_next:          { sl: "Naslednja",               en: "Next" },
+  ph_paid_cash:     { sl: "Plačano z gotovino (EUR)", en: "Paid with cash (EUR)" },
+  ph_paid_lana:     { sl: "Plačano z Lanami",         en: "Paid with LANA" },
+  ph_fee_received:  { sl: "Prejeti fee (cashback)",   en: "Fee received (cashback)" },
 
   // ─── MojProfil ────────────────────────────────────────────────────────────
   mp_title:          { sl: "Moj profil",             en: "My profile" },

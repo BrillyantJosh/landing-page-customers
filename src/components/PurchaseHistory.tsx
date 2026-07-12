@@ -57,7 +57,7 @@ export function PurchaseHistory({ hexId, lang }: { hexId: string; lang: Lang }) 
         <span className="ml-auto text-sm text-muted-foreground">{list.length}</span>
       </div>
 
-      <PurchaseTotalsBar totals={totals} />
+      <PurchaseTotalsBar totals={totals} lang={lang} />
 
       <div className="space-y-2">
         {shown.map((p) => (

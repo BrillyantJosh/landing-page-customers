@@ -16,22 +16,44 @@ function payLabel(pt: string | null, lang: Lang): string {
   return pt.toUpperCase(); // LANA
 }
 
-/** Per-currency totals as small pills. */
-export function PurchaseTotalsBar({ totals }: { totals: PurchaseTotals }) {
+/** Per-currency totals: overall pill + split by how it was paid (cash/EUR vs
+ *  LANA) + the fee/cashback the buyer received on the cash purchases. */
+export function PurchaseTotalsBar({ totals, lang }: { totals: PurchaseTotals; lang: Lang }) {
   const entries = Object.entries(totals);
   if (entries.length === 0) return null;
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="space-y-4">
       {entries.map(([cur, tot]) => (
-        <div
-          key={cur}
-          className="rounded-full bg-lana-lavender/70 border border-lana-purpleSoft/40 px-3 py-1.5 text-xs"
-        >
-          <span className="font-semibold text-lana-ink">{fmtFiat(tot.fiat, cur)}</span>
-          <span className="text-muted-foreground">
-            {" · "}
-            {fmtLana(tot.lana)} LANA · {tot.count}×
-          </span>
+        <div key={cur} className="space-y-2">
+          <div className="inline-flex rounded-full bg-lana-lavender/70 border border-lana-purpleSoft/40 px-3 py-1.5 text-xs">
+            <span className="font-semibold text-lana-ink">{fmtFiat(tot.fiat, cur)}</span>
+            <span className="text-muted-foreground"> · {fmtLana(tot.lana)} LANA · {tot.count}×</span>
+          </div>
+
+          <div className="space-y-1 text-xs">
+            {tot.byCash.count > 0 && (
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-muted-foreground">{t("ph_paid_cash", lang)}</span>
+                <span className="text-lana-ink tabular-nums">{fmtFiat(tot.byCash.fiat, cur)} · {tot.byCash.count}×</span>
+              </div>
+            )}
+            {tot.byLana.count > 0 && (
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-muted-foreground">{t("ph_paid_lana", lang)}</span>
+                <span className="text-lana-ink tabular-nums">
+                  {fmtLana(tot.byLana.lana)} LANA <span className="text-muted-foreground">({fmtFiat(tot.byLana.fiat, cur)})</span> · {tot.byLana.count}×
+                </span>
+              </div>
+            )}
+            {tot.cashback.fiat > 0 && (
+              <div className="flex items-center justify-between gap-3 pt-1.5 border-t border-lana-purpleSoft/25">
+                <span className="text-emerald-700 font-medium">{t("ph_fee_received", lang)}</span>
+                <span className="text-emerald-700 font-semibold tabular-nums">
+                  +{fmtFiat(tot.cashback.fiat, cur)} <span className="text-emerald-600/80 font-normal">({fmtLana(tot.cashback.lana)} LANA)</span>
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </div>
@@ -77,11 +99,21 @@ export function PurchaseRow({ p, lang }: { p: Purchase; lang: Lang }) {
               <ExternalLink className="w-3 h-3" /> {t("ph_receipt", lang)}
             </a>
           )}
-          {p.paymentType && (
-            <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded-full bg-lana-lavender text-lana-ink/70 uppercase shrink-0">
-              {payLabel(p.paymentType, lang)}
-            </span>
-          )}
+          <div className="ml-auto flex items-center gap-1.5 shrink-0">
+            {p.cashbackFiat > 0 && (
+              <span
+                title={t("ph_fee_received", lang)}
+                className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-semibold"
+              >
+                +{fmtFiat(p.cashbackFiat, p.currency)}
+              </span>
+            )}
+            {p.paymentType && (
+              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-lana-lavender text-lana-ink/70 uppercase">
+                {payLabel(p.paymentType, lang)}
+              </span>
+            )}
+          </div>
         </div>
       )}
     </div>

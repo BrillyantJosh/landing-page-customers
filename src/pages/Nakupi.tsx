@@ -108,7 +108,7 @@ export default function Nakupi() {
                 {/* Totals summary */}
                 <div className="glass-card p-5 space-y-3">
                   <p className="text-xs uppercase tracking-wider text-muted-foreground">{t("ph_total", lang)}</p>
-                  <PurchaseTotalsBar totals={totals} />
+                  <PurchaseTotalsBar totals={totals} lang={lang} />
                 </div>
 
                 {/* List */}

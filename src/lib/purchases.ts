@@ -16,7 +16,10 @@ export interface Purchase {
   fiatAmount: number;
   currency: string;
   lanaAmount: number;
-  paymentType: string | null;
+  paymentType: string | null;   // 'cash' (paid in EUR) | 'lana'
+  cashbackFiat: number;         // buyer's fee/cashback received (cash purchases only)
+  cashbackLana: number;
+  lanaDiscountPer: number;      // cashback rate % (cash)
   receiptUrl: string | null;
   receiptType: string | null;
   receiptDescription: string | null;
@@ -24,7 +27,30 @@ export interface Purchase {
   exchangeRate: number | null;
 }
 
-export type PurchaseTotals = Record<string, { fiat: number; lana: number; count: number }>;
+interface Method { fiat: number; lana: number; count: number }
+export interface CurrencyTotal {
+  fiat: number; lana: number; count: number;
+  byCash: Method;                        // paid with cash (EUR)
+  byLana: Method;                        // paid with LANA
+  cashback: { fiat: number; lana: number }; // total fee received (cash purchases)
+}
+export type PurchaseTotals = Record<string, CurrencyTotal>;
+
+const emptyMethod = (): Method => ({ fiat: 0, lana: 0, count: 0 });
+// Old cached responses may lack the split fields — fill defaults so the UI never crashes.
+function normalizeTotals(raw: any): PurchaseTotals {
+  const out: PurchaseTotals = {};
+  for (const [cur, t] of Object.entries(raw || {})) {
+    const tt = t as any;
+    out[cur] = {
+      fiat: tt.fiat || 0, lana: tt.lana || 0, count: tt.count || 0,
+      byCash: tt.byCash || emptyMethod(),
+      byLana: tt.byLana || emptyMethod(),
+      cashback: tt.cashback || { fiat: 0, lana: 0 },
+    };
+  }
+  return out;
+}
 
 export interface PurchasesResponse {
   purchases: Purchase[];
@@ -41,10 +67,16 @@ export async function fetchPurchases(hexId: string): Promise<PurchasesResponse> 
   const res = await fetch(`/api/purchases/${hexId}`);
   const data = (await res.json()) as PurchasesResponse;
   if (data.error) throw new Error(data.error);
+  const purchases = (data.purchases || []).map((p) => ({
+    ...p,
+    cashbackFiat: p.cashbackFiat || 0,
+    cashbackLana: p.cashbackLana || 0,
+    lanaDiscountPer: p.lanaDiscountPer || 0,
+  }));
   return {
-    purchases: data.purchases || [],
-    totals: data.totals || {},
-    count: data.count ?? (data.purchases || []).length,
+    purchases,
+    totals: normalizeTotals(data.totals),
+    count: data.count ?? purchases.length,
     exchangeRates: data.exchangeRates,
     authorValidated: data.authorValidated,
     updated_at: data.updated_at,
