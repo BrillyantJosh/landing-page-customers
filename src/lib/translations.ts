@@ -59,6 +59,17 @@ export const tr: Translations = {
   // ─── KjePotrosim ──────────────────────────────────────────────────────────
   kp_title:    { sl: "Kje potrošim sredstva?",  en: "Where can I spend?" },
   kp_sub:      { sl: "Izberi portal in poišči ponudnika v omrežju Ekonomije Obilja.", en: "Choose a portal and find a provider in the Economy of Abundance network." },
+  kp_search_title:       { sl: "Poišči ponudnika",  en: "Find a provider" },
+  kp_search_placeholder: { sl: "Ime, kraj ali dejavnost …", en: "Name, town or what they do …" },
+  kp_search_loading:     { sl: "Nalagam ponudnike…", en: "Loading providers…" },
+  kp_search_error:       { sl: "Seznama ponudnikov trenutno ni mogoče naložiti. Ponudnike najdeš na portalih spodaj.", en: "The list of providers cannot be loaded right now. You can find providers on the portals below." },
+  kp_search_count:       { sl: "Ponudnikov v omrežju", en: "Providers in the network" },
+  kp_search_hits:        { sl: "Najdeno",            en: "Found" },
+  kp_search_show_all:    { sl: "Pokaži vse",         en: "Show all" },
+  kp_search_hide_all:    { sl: "Skrij seznam",       en: "Hide the list" },
+  kp_search_none:        { sl: "Ni ponudnika s tem imenom ali dejavnostjo.", en: "No provider with that name or activity." },
+  kp_search_website:     { sl: "spletna stran ponudnika", en: "provider's website" },
+  kp_search_no_portal:   { sl: "še ni na portalu", en: "not on a portal yet" },
 
   // ─── Upcoming events (KIND 36677) ─────────────────────────────────────────
   ev_title:    { sl: "Aktualni dogodki",        en: "Current events" },

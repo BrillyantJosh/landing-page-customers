@@ -9,7 +9,9 @@
     "build": "vite build",
     "start": "tsx server/index.ts",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "tsx --test 'server/test/*.test.ts'",
+    "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json"
   },
   "dependencies": {
     "@types/qrcode": "^1.5.6",

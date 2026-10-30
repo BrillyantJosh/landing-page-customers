@@ -16,6 +16,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import { fetchKind0Profile, broadcastEvent, fetchCalendarEvents, type NostrEvent } from "./lib/nostr.js";
+import { getProviderDirectory } from "./lib/providerSource.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -107,6 +108,21 @@ app.get("/api/events", async (_req, res) => {
   }
 });
 
+// ─── Every open provider (search on /kje-potrosim) ───────
+// Built from the relays (KIND 30901 + 30903), not from the portals: a provider whose
+// category no portal lists is still in it. See server/lib/providerDirectory.ts.
+app.get("/api/providers", async (_req, res) => {
+  try {
+    const directory = await getProviderDirectory();
+    if (!directory) return res.status(503).json({ error: "Relays unavailable", providers: [] });
+    res.set("Cache-Control", "public, max-age=60");
+    res.json(directory);
+  } catch (err) {
+    console.error("[providers] failed:", err);
+    res.status(502).json({ error: "Relays unavailable", providers: [] });
+  }
+});
+
 // ─── Broadcast pre-signed Nostr event to relays ──────────
 app.post("/api/broadcast-event", async (req, res) => {
   const { event } = req.body;
@@ -170,4 +186,6 @@ if (fs.existsSync(distDir)) {
 app.listen(PORT, () => {
   console.log(`[landing-page-customers] listening on :${PORT}`);
   console.log(`[landing-page-customers] upstream=${UPSTREAM}`);
+  // Read the provider directory once now, so the first visitor of /kje-potrosim does not wait.
+  getProviderDirectory().catch(() => {});
 });

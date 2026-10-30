@@ -2,6 +2,7 @@ import { Wallet, ExternalLink, ArrowLeft } from "lucide-react";
 import { RotatingBackground } from "@/components/RotatingBackground";
 import { AppHeader } from "@/components/AppHeader";
 import { UpcomingEvents } from "@/components/UpcomingEvents";
+import { ProviderSearch } from "@/components/ProviderSearch";
 import { useLang } from "@/contexts/LanguageContext";
 import { t } from "@/lib/translations";
 
@@ -44,6 +45,8 @@ export default function KjePotrosim() {
               <h1 className="font-display text-2xl font-semibold text-lana-ink">{t("kp_title", lang)}</h1>
               <p className="text-sm text-muted-foreground mt-1">{t("kp_sub", lang)}</p>
             </div>
+
+            <ProviderSearch />
 
             <div className="grid sm:grid-cols-2 gap-3">
               {PORTALS.map((portal) =>
