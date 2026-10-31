@@ -98,6 +98,40 @@ test("only open units of Ekonomija Obilja are listed (same rules as lanapays.us)
   assert.equal(breakdown.open, 7);
 });
 
+test("monthly limit reached (quota_blocked) is still listed, flagged; suspended / rejected / archived / test / Simple / LanaFund.Me are not", () => {
+  // QIFLOW by THV turned quota_blocked on 30. 10. 13:48 UTC: the provider Marjan asked about.
+  const k = Array.from({ length: 8 }, () => generateSecretKey());
+  const archived = sign(k[3], 30901, [["d", "q3"], ["unit_id", "q3"], ["name", "Arhivirana na meji"], ["category", "Shop"], ["status", "archived"]]);
+  const units = [
+    unit(k[0], "q0", "QIFLOW by THV", "Body Arts & Movement"),
+    unit(k[1], "q1", "Odprta", "Producer"),
+    unit(k[2], "q2", "Suspendirana", "Shop"),
+    archived,
+    unit(k[4], "q4", "Meja (TEST)", "Shop"),
+    unit(k[5], "q5", "Simple na meji", "Services", [["lana_only", "true"]]),
+    unit(k[6], "q6", "Izplačila na meji", "LanaFund.Me"),
+    unit(k[7], "q7", "Zavrnjena", "Other"),
+  ];
+  const statuses = [
+    status(k[0], "q0", "active", processorSk, clock + 10),
+    status(k[0], "q0", "quota_blocked", processorSk, clock + 20), // newest wins
+    status(k[1], "q1", "active"),
+    status(k[2], "q2", "suspended"),
+    status(k[3], "q3", "quota_blocked"),
+    status(k[4], "q4", "quota_blocked"),
+    status(k[5], "q5", "quota_blocked"),
+    status(k[6], "q6", "quota_blocked"),
+    status(k[7], "q7", "rejected"),
+  ];
+  const { providers, breakdown } = buildDirectory(units, statuses, { processorHex: PROCESSOR });
+  assert.deepEqual(names(providers), ["Odprta", "QIFLOW by THV"]);
+  assert.equal(providers.find((p) => p.name === "QIFLOW by THV")?.monthlyLimitReached, true);
+  assert.equal(providers.find((p) => p.name === "Odprta")?.monthlyLimitReached, false);
+  assert.equal(breakdown.quotaBlocked, 5);
+  assert.equal(breakdown.open, 1);
+  assert.deepEqual(names(searchProviders(providers, "qiflow")), ["QIFLOW by THV"]);
+});
+
 test("the newest 30903 decides; a 30903 from anyone but the processor, or about another owner, does not count", () => {
   const sk = generateSecretKey();
   const stranger = generateSecretKey();

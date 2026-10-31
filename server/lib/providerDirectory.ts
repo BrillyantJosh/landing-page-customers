@@ -15,6 +15,10 @@
  *   -> newest 30901 per unit
  *   -> status = newest processor-signed 30903 whose `a` names that owner and unit;
  *      open = active | quota_warning_*  (the portals' rule)
+ *      PLUS quota_blocked (Brilly, 31. 10.): the monthly limit is reached, the provider
+ *      is real and reopens next month, so it stays findable with monthlyLimitReached.
+ *      QIFLOW by THV itself turned quota_blocked on 30. 10. 13:48 UTC. Suspended,
+ *      rejected and every other status stay out.
  *   -> minus archived by the owner (30901 status other than active)
  *   -> minus LanaFund.Me payout units (KIND 30901 v1.1.0: portals must not list them)
  *   -> minus test / copy units (TEST / Kopija / Copy as a word in the name)
@@ -57,6 +61,8 @@ export interface DirectoryProvider {
   image: string;
   /** The portal that lists this provider right now, or null when no portal does. */
   portal: PortalRef | null;
+  /** Newest 30903 is quota_blocked: this month's limit is used up, it reopens next month. */
+  monthlyLimitReached: boolean;
 }
 
 export interface DirectoryBreakdown {
@@ -67,6 +73,8 @@ export interface DirectoryBreakdown {
   units: number;
   statusByLatest30903: Record<string, number>;
   open: number;
+  /** quota_blocked units that passed the 30903 step (listed ones carry the flag). */
+  quotaBlocked: number;
   archived: number;
   payoutOnly: number;
   test: number;
@@ -136,6 +144,8 @@ const isPayoutOnlyEvent = (ev: NostrEvent): boolean =>
 const isTestUnitEvent = (ev: NostrEvent): boolean => TEST_NAME.test(tagValue(ev, "name"));
 
 const isOpenStatus = (status: string): boolean => status === "active" || status.startsWith("quota_warning");
+/** Monthly limit used up: listed, flagged, not hidden (it reopens on the 1st). */
+const QUOTA_BLOCKED = "quota_blocked";
 
 const httpsOnly = (raw: string): string => (/^https:\/\/\S+$/i.test(raw.trim()) ? raw.trim() : "");
 
@@ -235,13 +245,16 @@ export function buildDirectory(
   const statuses: Record<string, number> = {};
   const removed = { archived: 0, payoutOnly: 0, test: 0, simple: 0 };
   let open = 0;
+  let quotaBlocked = 0;
   const providers: DirectoryProvider[] = [];
   for (const [key, ev] of newest) {
     const s = statusOf.get(key);
     const status = s ? tagValue(s, "status").trim().toLowerCase() || "unknown" : "none";
     statuses[status] = (statuses[status] || 0) + 1;
-    if (!isOpenStatus(status)) continue;
-    open++;
+    const monthlyLimitReached = status === QUOTA_BLOCKED;
+    if (monthlyLimitReached) quotaBlocked++;
+    else if (isOpenStatus(status)) open++;
+    else continue;
     const ownStatus = tagValue(ev, "status").trim().toLowerCase();
     if (ownStatus && ownStatus !== "active") { removed.archived++; continue; }
     if (isPayoutOnlyEvent(ev)) { removed.payoutOnly++; continue; }
@@ -259,6 +272,7 @@ export function buildDirectory(
       website: websiteOf(tagValue(ev, "url")),
       image: imageOf(ev),
       portal: portalOf.get(key) || null,
+      monthlyLimitReached,
     });
   }
   providers.sort((a, b) => byName.compare(a.name, b.name));
@@ -274,6 +288,7 @@ export function buildDirectory(
       units: newest.size,
       statusByLatest30903: statuses,
       open,
+      quotaBlocked,
       archived: removed.archived,
       payoutOnly: removed.payoutOnly,
       test: removed.test,

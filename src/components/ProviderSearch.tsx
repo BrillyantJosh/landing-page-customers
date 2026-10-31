@@ -129,7 +129,14 @@ export function ProviderSearch() {
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-lana-ink text-sm leading-tight truncate">{p.name}</p>
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 min-w-0">
+                    <p className="font-semibold text-lana-ink text-sm leading-tight break-words min-w-0">{p.name}</p>
+                    {p.monthlyLimitReached && (
+                      <span className="shrink-0 rounded-full border border-border/70 bg-foreground/5 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                        {t("kp_search_limit", lang)}
+                      </span>
+                    )}
+                  </div>
                   {what && <p className="text-[11px] text-muted-foreground mt-0.5 truncate">{what}</p>}
                   <p className="text-[11px] text-muted-foreground mt-0.5 flex flex-wrap items-center gap-x-1">
                     {where && (

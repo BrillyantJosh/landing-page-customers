@@ -216,7 +216,7 @@ export async function portalMembership(
       lastGood.set(portal.host, keys);
       return keys;
     } catch (err) {
-      console.warn("[providers] portal list unavailable:", (err as Error).message);
+      console.warn(`[providers] portal list unavailable: ${portal.host}:`, (err as Error).message);
       return lastGood.get(portal.host) || new Set<string>();
     }
   }));
@@ -271,7 +271,8 @@ export async function loadProviderDirectory(opts: {
   });
   const current = new Set([...units, ...statuses].filter(Boolean).map(verifiedKey));
   for (const key of verifiedCache.keys()) if (!current.has(key)) verifiedCache.delete(key);
-  console.log(`[providers] ${providers.length} listed (${breakdown.onAPortal} on a portal, ${breakdown.onNoPortal} on none), ${complete}/${relays.length} relays`);
+  const atLimit = providers.filter((p) => p.monthlyLimitReached).length;
+  console.log(`[providers] ${providers.length} listed (${breakdown.onAPortal} on a portal, ${breakdown.onNoPortal} on none, ${atLimit} at the monthly limit), ${complete}/${relays.length} relays`);
   return { providers, count: providers.length, breakdown, relays: { complete, of: relays.length }, countedAt: Date.now() };
 }
 

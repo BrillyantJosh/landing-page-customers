@@ -15,6 +15,8 @@ export interface SearchableProvider {
   website: string;
   image: string;
   portal: { host: string; url: string } | null;
+  /** This month's limit is used up (KIND 30903 quota_blocked); it reopens next month. */
+  monthlyLimitReached?: boolean;
 }
 
 export function normalizeForSearch(s: string): string {

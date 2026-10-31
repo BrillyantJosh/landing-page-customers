@@ -70,6 +70,7 @@ export const tr: Translations = {
   kp_search_none:        { sl: "Ni ponudnika s tem imenom ali dejavnostjo.", en: "No provider with that name or activity." },
   kp_search_website:     { sl: "spletna stran ponudnika", en: "provider's website" },
   kp_search_no_portal:   { sl: "še ni na portalu", en: "not on a portal yet" },
+  kp_search_limit:       { sl: "Mesečna meja dosežena", en: "Monthly limit reached" },
 
   // ─── Upcoming events (KIND 36677) ─────────────────────────────────────────
   ev_title:    { sl: "Aktualni dogodki",        en: "Current events" },
