@@ -33,8 +33,14 @@ export interface Kind0Profile {
 
 export async function fetchKind0Profile(hexId: string): Promise<Kind0Profile | null> {
   return new Promise((resolve) => {
-    const timeout = setTimeout(() => resolve(null), 6000);
+    const timeout = setTimeout(() => { closeAll(); resolve(null); }, 6000);
     let resolved = false;
+    // Every socket this lookup opens is closed when the lookup ends — on the
+    // first answer, on the timeout, and on each relay's EOSE. Closing only the
+    // winner leaked the slower relay's socket forever (19 Nov 2026: hundreds of
+    // open sockets to relay.lanacoin-eternity.com, which always loses the race).
+    const sockets: InstanceType<typeof WebSocket>[] = [];
+    const closeAll = () => { for (const s of sockets) { try { s.close(); } catch { /* already gone */ } } };
 
     for (const relayUrl of LANA_RELAYS) {
       let ws: InstanceType<typeof WebSocket>;
@@ -43,6 +49,7 @@ export async function fetchKind0Profile(hexId: string): Promise<Kind0Profile | n
       } catch {
         continue;
       }
+      sockets.push(ws);
 
       const subId = `kind0_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
 
@@ -58,7 +65,7 @@ export async function fetchKind0Profile(hexId: string): Promise<Kind0Profile | n
             if (event.kind === 0) {
               resolved = true;
               clearTimeout(timeout);
-              ws.close();
+              closeAll();
               try {
                 const content = JSON.parse(event.content);
                 resolve(content as Kind0Profile);
@@ -67,7 +74,7 @@ export async function fetchKind0Profile(hexId: string): Promise<Kind0Profile | n
               }
             }
           }
-          if (msg[0] === 'EOSE' && !resolved) ws.close();
+          if (msg[0] === 'EOSE') ws.close();
         } catch {}
       });
 
